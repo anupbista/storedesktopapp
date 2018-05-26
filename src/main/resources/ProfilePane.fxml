@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Text?>
+
+<StackPane prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.ProfilePaneController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+         <children>
+            <Text fx:id="userName" layoutX="356.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" AnchorPane.leftAnchor="356.0" />
+            <Rectangle fill="#4caf50" height="137.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="688.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <ImageView fx:id="userImage" fitHeight="81.0" fitWidth="123.0" layoutX="298.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/user.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="250.0" layoutY="182.0" prefWidth="81.0" text="UserName:" />
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>

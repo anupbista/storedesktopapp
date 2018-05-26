@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextArea?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane prefHeight="600.0" prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.ProductsPaneController">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="600.0" />
+      <JFXTabPane stylesheets="@css/style.css">
+         <tabs>
+            <Tab style="-fx-background-color: #535c60;" text="All Products">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="14.0" layoutY="51.0" prefHeight="505.0" prefWidth="664.0">
+                           <content>
+                              <TableView fx:id="allProducts" prefHeight="540.0" prefWidth="662.0" tableMenuButtonVisible="true">
+                                <columns>
+                                  <TableColumn fx:id="productID" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="productname" prefWidth="75.0" text="Name" />
+                                    <TableColumn fx:id="productdesc" prefWidth="75.0" text="Desc" />
+                                    <TableColumn fx:id="productcat" prefWidth="75.0" text="Cat" />
+                                    <TableColumn fx:id="productsize" prefWidth="75.0" text="Size" />
+                                    <TableColumn fx:id="productcolor" prefWidth="75.0" text="Color" />
+                                    <TableColumn fx:id="productbrand" prefWidth="75.0" text="Brand" />
+                                    <TableColumn fx:id="productprice" prefWidth="75.0" text="Price" />
+                                    <TableColumn fx:id="productquantity" prefWidth="75.0" text="Quantity" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                        <JFXTextField fx:id="searchProducts" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchAllProducts" promptText="Search Products" />
+                        <JFXButton layoutX="608.0" layoutY="16.0" onAction="#refreshloadAllProducts" text="Reload" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab style="-fx-background-color: #535c60;" text="Add New Product">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text layoutX="168.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                        <Text layoutX="167.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Name *" />
+                        <Text layoutX="167.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Description *" />
+                        <Text layoutX="168.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Category *" />
+                        <Text layoutX="167.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Size" />
+                        <Text layoutX="169.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Color" />
+                        <Text layoutX="168.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Brand" />
+                        <Text layoutX="170.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Price *" />
+                        <Text layoutX="169.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Quantity *" />
+                        <JFXTextField fx:id="addproductid" layoutX="318.0" layoutY="84.0" />
+                        <JFXTextField fx:id="addproductname" layoutX="318.0" layoutY="120.0" />
+                        <JFXTextArea fx:id="addproductdesc" layoutX="315.0" layoutY="150.0" prefHeight="62.0" prefWidth="161.0" />
+                        <JFXTextField fx:id="addproductcat" layoutX="318.0" layoutY="228.0" />
+                        <JFXTextField fx:id="addproductsize" layoutX="318.0" layoutY="255.0" />
+                        <JFXTextField fx:id="addproductcolor" layoutX="318.0" layoutY="288.0" />
+                        <JFXTextField fx:id="addproductbrand" layoutX="318.0" layoutY="326.0" />
+                        <JFXTextField fx:id="addproductprice" layoutX="318.0" layoutY="360.0" />
+                        <JFXTextField fx:id="addproductquantity" layoutX="318.0" layoutY="392.0" />
+                        <JFXButton fx:id="addProductBtn" buttonType="RAISED" layoutX="371.0" layoutY="477.0" onAction="#addProduct" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Add Product" />
+                        <Label fx:id="error_addProduct" layoutX="170.0" layoutY="448.0" textFill="#e74c3c" visible="false">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor></AnchorPane>
+              </content>
+            </Tab>
+            <Tab style="-fx-background-color: #535c60;" text="Update Product">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane fx:id="updatePane" layoutX="167.0" layoutY="47.0" prefWidth="309.0" visible="false">
+                           <children>
+                              <Text layoutY="86.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Name *" />
+                              <Text layoutY="121.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Description *" />
+                              <Text layoutX="1.0" layoutY="186.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Category *" />
+                              <Text layoutY="221.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Size" />
+                              <Text layoutX="2.0" layoutY="256.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Color" />
+                              <Text layoutX="1.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Brand" />
+                              <Text layoutX="3.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Price *" />
+                              <Text layoutX="2.0" layoutY="354.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Quantity *" />
+                              <JFXTextField fx:id="updateproductname" layoutX="151.0" layoutY="73.0" />
+                              <JFXTextArea fx:id="updateproductdesc" layoutX="148.0" layoutY="103.0" prefHeight="62.0" prefWidth="161.0" />
+                              <JFXTextField fx:id="updateproductcat" layoutX="151.0" layoutY="181.0" />
+                              <JFXTextField fx:id="updateproductsize" layoutX="151.0" layoutY="208.0" />
+                              <JFXTextField fx:id="updateproductcolor" layoutX="151.0" layoutY="241.0" />
+                              <JFXTextField fx:id="updateproductbrand" layoutX="151.0" layoutY="279.0" />
+                              <JFXTextField fx:id="updateproductprice" layoutX="151.0" layoutY="313.0" />
+                              <JFXTextField fx:id="updateproductquantity" layoutX="151.0" layoutY="345.0" />
+                              <JFXButton fx:id="updateProductBtn" buttonType="RAISED" layoutX="186.0" layoutY="430.0" onAction="#updateProduct" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Update Product" />
+                              <Label fx:id="error_updateProduct" layoutX="3.0" layoutY="401.0" textFill="#e74c3c" visible="false">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="95.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="166.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                         <JFXTextField fx:id="updateproductID" layoutX="315.0" layoutY="50.0" onKeyTyped="#toggleUpdatepane" />
+                         <JFXButton fx:id="updateOKbtn" buttonType="RAISED" layoutX="368.0" layoutY="86.0" onAction="#showUpdatePane" style="-fx-background-color: #4CAF50;" text="OK" />
+                        <Text layoutX="231.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to update" />
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab style="-fx-background-color: #535c60;" text="Delete Product">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="112.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="166.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                        <JFXTextField fx:id="deleteProductID" layoutX="315.0" layoutY="50.0" onKeyTyped="#toggleUpdatepane" />
+                        <JFXButton fx:id="deleteproductbtn" buttonType="RAISED" layoutX="396.0" layoutY="92.0" onAction="#deleteproduct" style="-fx-background-color: #4CAF50;" text="DELETE" />
+                        <Text layoutX="231.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to delete" />
+                     </children>
+                     <cursor>
+                        <Cursor fx:constant="OPEN_HAND" />
+                     </cursor>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+      </JFXTabPane>
+   </children>
+</StackPane>

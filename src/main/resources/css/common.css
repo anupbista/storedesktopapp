@@ -1,0 +1,8 @@
+.text-field{
+    -fx-font-size: 12px;
+}
+.login-text-input{
+    -fx-text-fill: #fff;
+    -fx-text-inner-color: #fff;
+    -fx-prompt-text-fill:#fff;
+}

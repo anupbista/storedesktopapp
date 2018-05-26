@@ -1,0 +1,29 @@
+.tab{
+    -fx-pref-height: 42;
+    -fx-pref-width: 150;
+}
+.tab-header-background{
+ -fx-background-color: #535c60;
+ -fx-font-size:12;
+}
+.jfx-tab-pane .tab-selected-line{
+    -fx-background-color: #fff;
+}
+.tab .tab-label {
+    -fx-alignment: CENTER;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.button_menu{
+    -fx-border-radius:0;
+    -fx-background-radius:0;
+    -fx-border-insets: 0, 0 0 0 2;
+    -fx-alignment: CENTER-LEFT;
+    -fx-padding: 5 20 5 45;
+}
+.table-row-cell:empty{
+    -fx-background-color:white;
+}
+.table-row-cell:empty .table-cell{
+    -fx-border-width: 0px;
+}

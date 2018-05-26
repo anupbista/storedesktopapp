@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="loginPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="login.LoginController">
+   <children>
+      <Pane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #fff;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="400.0" fitWidth="600.0" pickOnBounds="true">
+               <image>
+                  <Image url="@img/store.jpg" />
+               </image>
+            </ImageView>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#02080d99" height="400.0" layoutX="-1.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="600.0" />
+            <JFXTextField fx:id="username" focusColor="#4caf50" layoutX="69.0" layoutY="84.0" prefHeight="40.0" prefWidth="230.0" promptText="Username" styleClass="login-text-input" stylesheets="@css/common.css" unFocusColor="WHITE" />
+            <JFXPasswordField fx:id="password" focusColor="#4caf50" layoutX="69.0" layoutY="157.0" prefHeight="40.0" prefWidth="230.0" promptText="Password" styleClass="login-text-input" stylesheets="@css/common.css" unFocusColor="WHITE" />
+            <JFXCheckBox fx:id="rememberMe" checkedColor="#4caf50" layoutX="38.0" layoutY="237.0" text="Remember Me" textFill="WHITE" unCheckedColor="WHITE">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </JFXCheckBox>
+            <JFXButton fx:id="login_btn" layoutX="201.0" layoutY="226.0" onAction="#login" prefHeight="40.0" prefWidth="98.0" style="-fx-background-color: #4CAF50;" text="Login" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></JFXButton>
+            <Text fill="WHITE" layoutX="40.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Don't have and account ?">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Text>
+            <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="31.0" layoutY="121.0" size="18" text="" />
+            <FontAwesomeIconView fill="WHITE" glyphName="KEY" layoutX="31.0" layoutY="188.0" size="18" />
+            <Hyperlink fx:id="signup_btn" layoutX="226.0" layoutY="303.0" onAction="#openSignUpPane" text="SignUp" textFill="#4caf50" underline="true">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Hyperlink>
+            <Label fx:id="error_username" layoutX="69.0" layoutY="142.0" textFill="#e74c3c" visible="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+            <Label fx:id="error_password" layoutX="67.0" layoutY="211.0" textFill="#e74c3c" visible="false">
+               <font>
+                  <Font size="12.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
