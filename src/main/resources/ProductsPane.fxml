@@ -10,6 +10,8 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
@@ -56,30 +58,41 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Text layoutX="168.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
-                        <Text layoutX="167.0" layoutY="146.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Name *" />
-                        <Text layoutX="167.0" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Description *" />
-                        <Text layoutX="168.0" layoutY="246.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Category *" />
-                        <Text layoutX="167.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Size" />
-                        <Text layoutX="169.0" layoutY="316.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Color" />
-                        <Text layoutX="168.0" layoutY="351.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Brand" />
-                        <Text layoutX="170.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Price *" />
-                        <Text layoutX="169.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Quantity *" />
-                        <JFXTextField fx:id="addproductid" layoutX="318.0" layoutY="84.0" />
-                        <JFXTextField fx:id="addproductname" layoutX="318.0" layoutY="120.0" />
-                        <JFXTextArea fx:id="addproductdesc" layoutX="315.0" layoutY="150.0" prefHeight="62.0" prefWidth="161.0" />
-                        <JFXTextField fx:id="addproductcat" layoutX="318.0" layoutY="228.0" />
-                        <JFXTextField fx:id="addproductsize" layoutX="318.0" layoutY="255.0" />
-                        <JFXTextField fx:id="addproductcolor" layoutX="318.0" layoutY="288.0" />
-                        <JFXTextField fx:id="addproductbrand" layoutX="318.0" layoutY="326.0" />
-                        <JFXTextField fx:id="addproductprice" layoutX="318.0" layoutY="360.0" />
-                        <JFXTextField fx:id="addproductquantity" layoutX="318.0" layoutY="392.0" />
-                        <JFXButton fx:id="addProductBtn" buttonType="RAISED" layoutX="371.0" layoutY="477.0" onAction="#addProduct" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Add Product" />
-                        <Label fx:id="error_addProduct" layoutX="170.0" layoutY="448.0" textFill="#e74c3c" visible="false">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </Label>
+                        <Pane layoutX="308.0" layoutY="75.0">
+                           <children>
+                              <Text layoutX="1.0" layoutY="13.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                              <Text layoutY="49.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Name *" />
+                              <Text layoutY="84.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Description *" />
+                              <Text layoutX="1.0" layoutY="149.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Category *" />
+                              <Text layoutY="184.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Size" />
+                              <Text layoutX="2.0" layoutY="219.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Color" />
+                              <Text layoutX="1.0" layoutY="254.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Brand" />
+                              <Text layoutX="3.0" layoutY="286.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Price *" />
+                              <Text layoutX="2.0" layoutY="317.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Quantity *" />
+                              <JFXTextField fx:id="addproductid" layoutX="151.0" />
+                              <JFXTextField fx:id="addproductname" layoutX="151.0" layoutY="36.0" />
+                              <JFXTextArea fx:id="addproductdesc" layoutX="148.0" layoutY="66.0" prefHeight="62.0" prefWidth="161.0" />
+                              <JFXTextField fx:id="addproductcat" layoutX="151.0" layoutY="144.0" />
+                              <JFXTextField fx:id="addproductsize" layoutX="151.0" layoutY="171.0" />
+                              <JFXTextField fx:id="addproductcolor" layoutX="151.0" layoutY="204.0" />
+                              <JFXTextField fx:id="addproductbrand" layoutX="151.0" layoutY="242.0" />
+                              <JFXTextField fx:id="addproductprice" layoutX="151.0" layoutY="276.0" />
+                              <JFXTextField fx:id="addproductquantity" layoutX="151.0" layoutY="308.0" />
+                              <JFXButton fx:id="addProductBtn" buttonType="RAISED" layoutX="204.0" layoutY="420.0" onAction="#addProduct" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Add Product" />
+                              <Label fx:id="error_addProduct" layoutX="3.0" layoutY="364.0" textFill="#e74c3c" visible="false">
+                                 <font>
+                                    <Font size="12.0" />
+                                 </font>
+                              </Label>
+                              <Text layoutX="3.0" layoutY="356.93310546875" strokeType="OUTSIDE" strokeWidth="0.0" text="Product Image" />
+                              <JFXButton fx:id="addproductImageBtn" buttonType="RAISED" layoutX="151.0" layoutY="359.0" onAction="#addProductImage" prefHeight="23.0" prefWidth="157.0" text="Upload  Image" />
+                           </children>
+                        </Pane>
+                        <ImageView fx:id="productImage" fitHeight="150.0" fitWidth="200.0" layoutX="78.0" layoutY="75.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@img/product.png" />
+                           </image>
+                        </ImageView>
                      </children>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />

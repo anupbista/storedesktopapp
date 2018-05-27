@@ -1,5 +1,7 @@
 package Modals;
 
+import java.io.File;
+
 public class Products {
     private String productID;
     private String productname;
@@ -10,6 +12,20 @@ public class Products {
     private String productbrand;
     private String productprice;
     private int productquantity;
+    private File productImage;
+
+    public Products(String productID, String productname, String productdesc, String productcategory, String productsize, String productcolor, String productbrand, String productprice, int productquantity, File productImage) {
+        this.productID = productID;
+        this.productname = productname;
+        this.productdesc = productdesc;
+        this.productcategory = productcategory;
+        this.productsize = productsize;
+        this.productcolor = productcolor;
+        this.productbrand = productbrand;
+        this.productprice = productprice;
+        this.productquantity = productquantity;
+        this.productImage = productImage;
+    }
 
     public Products(String productID, String productname, String productcategory, String productsize, String productcolor, String productbrand, String productprice, int productquantity) {
         this.productID = productID;
@@ -104,5 +120,13 @@ public class Products {
 
     public void setProductquantity(int productquantity) {
         this.productquantity = productquantity;
+    }
+
+    public File getProductImage() {
+        return productImage;
+    }
+
+    public void setProductImage(File productImage) {
+        this.productImage = productImage;
     }
 }

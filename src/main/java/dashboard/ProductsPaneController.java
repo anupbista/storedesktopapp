@@ -18,10 +18,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
 import login.LoginController;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
 import java.time.LocalDate;
@@ -125,7 +134,12 @@ public class ProductsPaneController implements Initializable {
     private Label error_updateProduct;
     @FXML
     private JFXTextField deleteProductID;
-
+    private FileInputStream fis;
+    private File selectedFile;
+    private File defaultSelectedFile;
+    private URI defaultProductImage;
+    @FXML
+    private ImageView productImage;
 
     ObservableList<Products> observableListAllProducts = FXCollections.observableArrayList();
 
@@ -212,9 +226,38 @@ public class ProductsPaneController implements Initializable {
             validationError=false;
         }
         if (validateEmpty()){
+
+            if(selectedFile != null){
+                try {
+                    fis = new FileInputStream(selectedFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            else{
+                try {
+                    defaultProductImage = getClass().getResource("/img/product.png").toURI();
+                } catch (URISyntaxException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    defaultSelectedFile = new File(defaultProductImage);
+                    fis=new FileInputStream(defaultSelectedFile);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+            File userImage;
+            if(selectedFile!=null){
+                userImage = selectedFile;
+            }else{
+                userImage = defaultSelectedFile;
+
+            }
+
             Products products = new Products(addproductid.getText(),addproductname.getText(),addproductdesc.getText(),addproductcat.getText(),addproductsize.getText(),addproductcolor.getText(),
-                    addproductbrand.getText(),addproductprice.getText(),Integer.parseInt(addproductquantity.getText()));
-            String sql = "INSERT INTO products values(?,?,?,?,?,?,?,?,?)";
+                    addproductbrand.getText(),addproductprice.getText(),Integer.parseInt(addproductquantity.getText()),userImage);
+            String sql = "INSERT INTO products values(?,?,?,?,?,?,?,?,?,?)";
             try {
                 connection = dbHandler.getConnection();
                 PreparedStatement pst= connection.prepareStatement(sql);
@@ -229,6 +272,7 @@ public class ProductsPaneController implements Initializable {
                     pst.setString(7,products.getProductbrand());
                     pst.setString(8,products.getProductprice());
                     pst.setInt(9,products.getProductquantity());
+                    pst.setBinaryStream(10, fis, (int)products.getProductImage().length());
                     pst.executeUpdate();
 
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -272,6 +316,30 @@ public class ProductsPaneController implements Initializable {
         }
     }
 
+    //    Image Uploader
+    @FXML
+    private void addProductImage(ActionEvent event){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select Product Image");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files",
+                        "*.png", "*.jpg", "*.jpeg")); // limit fileChooser options to image files
+        selectedFile = fileChooser.showOpenDialog(null);
+        if (selectedFile != null) {
+
+            String imageFile = null;
+            try {
+                imageFile = selectedFile.toURI().toURL().toString();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+
+            Image image = new Image(imageFile);
+            productImage.setImage(image);
+        } else {
+            System.out.println("Cancelled");
+        }
+    }
 
     @FXML
     public void refreshloadAllProducts() {
@@ -332,7 +400,7 @@ public class ProductsPaneController implements Initializable {
             alert.showAndWait();
         }else{
             String updateProductID = updateproductID.getText();
-            String sql = "SELECT * FROM products where productID="+updateProductID+"";
+            String sql = "SELECT * FROM products where productID='"+updateProductID+"'";
             try {
                 connection = dbHandler.getConnection();
                 st  = connection.createStatement();
@@ -366,14 +434,16 @@ public class ProductsPaneController implements Initializable {
                     alert.setHeaderText(null);
                     alert.setContentText("Enter valid product id to update !!!");
                     alert.showAndWait();
+
                     updatePane.setVisible(false);
                 }
 
             } catch (SQLException e) {
+                e.printStackTrace();
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR Dialog");
                 alert.setHeaderText(null);
-                alert.setContentText("Enter valid product id to delete !!!");
+                alert.setContentText("Enter valid product id to update !!!");
                 alert.showAndWait();
                 updatePane.setVisible(false);
                 updateproductID.clear();
