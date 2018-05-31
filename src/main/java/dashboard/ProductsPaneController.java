@@ -1,8 +1,11 @@
 package dashboard;
 
-import Modals.Customers;
 import Modals.Products;
-import com.jfoenix.controls.JFXButton;
+import com.google.gson.Gson;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dbConnection.DBHandler;
@@ -10,30 +13,31 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import login.LoginController;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class ProductsPaneController implements Initializable {
@@ -45,28 +49,29 @@ public class ProductsPaneController implements Initializable {
     private TableColumn<?, ?> productID;
 
     @FXML
-    private TableColumn<?, ?> productname;
+    private TableColumn<?, ?> productName;
 
     @FXML
-    private TableColumn<?, ?> productdesc;
+    private TableColumn<?, ?> productDesc;
 
     @FXML
-    private TableColumn<?, ?> productcat;
+    private TableColumn<?, ?> productCat;
 
     @FXML
-    private TableColumn<?, ?> productsize;
+    private TableColumn<?, ?> productSize;
 
     @FXML
-    private TableColumn<?, ?> productcolor;
+    private TableColumn<?, ?> productColor;
 
     @FXML
-    private TableColumn<?, ?> productbrand;
+    private TableColumn<?, ?> productBrand;
 
     @FXML
-    private TableColumn<?, ?> productprice;
+    private TableColumn<?, ?> productPrice;
 
     @FXML
     private TableColumn<?, ?> productquantity;
+
     @FXML
     private JFXTextField searchProducts;
 
@@ -138,6 +143,7 @@ public class ProductsPaneController implements Initializable {
     private File selectedFile;
     private File defaultSelectedFile;
     private URI defaultProductImage;
+    private String productImagePath;
     @FXML
     private ImageView productImage;
 
@@ -154,16 +160,79 @@ public class ProductsPaneController implements Initializable {
 
         loadAllProducts();
         productID.setCellValueFactory(new PropertyValueFactory<>("productID"));
-        productname.setCellValueFactory(new PropertyValueFactory<>("productname"));
-        productdesc.setCellValueFactory(new PropertyValueFactory<>("productdesc"));
-        productcat.setCellValueFactory(new PropertyValueFactory<>("productcategory"));
-        productsize.setCellValueFactory(new PropertyValueFactory<>("productsize"));
-        productcolor.setCellValueFactory(new PropertyValueFactory<>("productcolor"));
-        productbrand.setCellValueFactory(new PropertyValueFactory<>("productbrand"));
-        productprice.setCellValueFactory(new PropertyValueFactory<>("productprice"));
+        productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        productDesc.setCellValueFactory(new PropertyValueFactory<>("productDesc"));
+        productCat.setCellValueFactory(new PropertyValueFactory<>("productCat"));
+        productSize.setCellValueFactory(new PropertyValueFactory<>("productSize"));
+        productColor.setCellValueFactory(new PropertyValueFactory<>("productColor"));
+        productBrand.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
+        productPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
         productquantity.setCellValueFactory(new PropertyValueFactory<>("productquantity"));
 
         allProducts.setItems(observableListAllProducts);
+
+        allProducts.setOnMouseClicked(event -> {
+            generateQRCode();
+        });
+    }
+
+    private void generateQRCode(){
+
+       String productID = allProducts.getSelectionModel().getSelectedItem().getProductID();
+       String productName = allProducts.getSelectionModel().getSelectedItem().getProductName();
+       String productCat = allProducts.getSelectionModel().getSelectedItem().getProductCat();
+       String productSize = allProducts.getSelectionModel().getSelectedItem().getProductSize();
+       String productColor = allProducts.getSelectionModel().getSelectedItem().getProductColor();
+       String productBrand = allProducts.getSelectionModel().getSelectedItem().getProductBrand();
+       String productPrice = allProducts.getSelectionModel().getSelectedItem().getProductPrice();
+       String productDesc = allProducts.getSelectionModel().getSelectedItem().getProductDesc();
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+
+        Gson gson = new Gson();
+        Products qrcode = new Products(productID,productName,productDesc,productCat,productSize,productColor,productBrand,productPrice);
+
+        // 1. Java object to JSON, and save into a file
+        gson.toJson(qrcode);
+
+        // 2. Java object to JSON, and assign to a String
+        String jsonInString = gson.toJson(qrcode);
+
+        int width = 800;
+        int height = 800;
+
+        BufferedImage bufferedImage = null;
+        try {
+            BitMatrix byteMatrix = qrCodeWriter.encode(jsonInString, BarcodeFormat.QR_CODE, width, height);
+            bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            bufferedImage.createGraphics();
+
+            Graphics2D graphics = (Graphics2D) bufferedImage.getGraphics();
+            graphics.setColor(Color.WHITE);
+            graphics.fillRect(0, 0, width, height);
+            graphics.setColor(Color.BLACK);
+
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    if (byteMatrix.get(i, j)) {
+                        graphics.fillRect(i, j, 1, 1);
+                    }
+                }
+            }
+            System.out.println("Generated QR Code");
+        } catch (WriterException ex) {
+            System.out.println("Failed to generate QR Code "+ex);
+        }
+
+        ImageView qrView = new ImageView();
+        qrView.setImage(SwingFXUtils.toFXImage(bufferedImage, null));
+
+        StackPane root = new StackPane();
+        root.getChildren().add(qrView);
+        Scene scene = new Scene(root);
+        Stage QRCodeStage = new Stage();
+        QRCodeStage.setScene(scene);
+        QRCodeStage.show();
     }
 
     public void loadAllProducts() {
@@ -193,6 +262,7 @@ public class ProductsPaneController implements Initializable {
 
     }
 
+
     @FXML
     void searchAllProducts(KeyEvent event) {
         FilteredList<Products> filteredList = new FilteredList<>(observableListAllProducts, p-> true);
@@ -205,13 +275,10 @@ public class ProductsPaneController implements Initializable {
                 if (products.getProductID().toLowerCase().indexOf(typedText) != -1){
                     return true;
                 }
-                if (products.getProductname().toLowerCase().indexOf(typedText) != -1){
+                if (products.getProductName().toLowerCase().indexOf(typedText) != -1){
                     return true;
                 }
-                if (products.getProductcategory().toLowerCase().indexOf(typedText) != -1){
-                    return true;
-                }
-                return false;
+                return products.getProductCat().toLowerCase().indexOf(typedText) != -1;
             });
         });
         SortedList<Products> sortedList = new SortedList<>(filteredList);
@@ -264,13 +331,13 @@ public class ProductsPaneController implements Initializable {
 
                 try {
                     pst.setString(1,products.getProductID());
-                    pst.setString(2,products.getProductname());
-                    pst.setString(3,products.getProductdesc());
-                    pst.setString(4,products.getProductcategory());
-                    pst.setString(5,products.getProductsize());
-                    pst.setString(6,products.getProductcolor());
-                    pst.setString(7,products.getProductbrand());
-                    pst.setString(8,products.getProductprice());
+                    pst.setString(2,products.getProductName());
+                    pst.setString(3,products.getProductDesc());
+                    pst.setString(4,products.getProductCat());
+                    pst.setString(5,products.getProductSize());
+                    pst.setString(6,products.getProductColor());
+                    pst.setString(7,products.getProductBrand());
+                    pst.setString(8,products.getProductPrice());
                     pst.setInt(9,products.getProductquantity());
                     pst.setBinaryStream(10, fis, (int)products.getProductImage().length());
                     pst.executeUpdate();
@@ -326,6 +393,23 @@ public class ProductsPaneController implements Initializable {
                         "*.png", "*.jpg", "*.jpeg")); // limit fileChooser options to image files
         selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile != null) {
+//            try {
+//                InputStream in = new FileInputStream(selectedFile);
+//                File pimageFile = new File("src/main/uploads/productImage.jpg");
+//                OutputStream out = new FileOutputStream(pimageFile);
+//                productImagePath = pimageFile.getPath();
+//                System.out.println(productImagePath);
+//                byte[] content = new byte[1024];
+//                int size=0;
+//                while((size = in.read(content))!=-1){
+//                    out.write(content,0,size);
+//                }
+//            }
+//            catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
             String imageFile = null;
             try {

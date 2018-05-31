@@ -117,14 +117,14 @@ public class DashboardPaneController implements Initializable {
 
 
     private void customerLists(){
-        String sql = "SELECT * FROM allCustomers";
+        String sql = "SELECT * FROM customers";
         try {
             connection = dbHandler.getConnection();
             st  = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
-                observableLists.add(new Customers(rs.getString("username"), rs.getString("firstname"),
-                        rs.getString("lastname"), rs.getString("address"), rs.getString("phonenumber"), rs.getString("email")));
+                observableLists.add(new Customers(rs.getString("username"), rs.getString("first_name"),
+                        rs.getString("last_name"), rs.getString("address"), rs.getString("phone_number"), rs.getString("email")));
             }
         } catch (SQLException e) {
             e.printStackTrace();

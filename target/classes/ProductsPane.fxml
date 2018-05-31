@@ -33,13 +33,13 @@
                               <TableView fx:id="allProducts" prefHeight="540.0" prefWidth="662.0" tableMenuButtonVisible="true">
                                 <columns>
                                   <TableColumn fx:id="productID" prefWidth="75.0" text="ID" />
-                                  <TableColumn fx:id="productname" prefWidth="75.0" text="Name" />
-                                    <TableColumn fx:id="productdesc" prefWidth="75.0" text="Desc" />
-                                    <TableColumn fx:id="productcat" prefWidth="75.0" text="Cat" />
-                                    <TableColumn fx:id="productsize" prefWidth="75.0" text="Size" />
-                                    <TableColumn fx:id="productcolor" prefWidth="75.0" text="Color" />
-                                    <TableColumn fx:id="productbrand" prefWidth="75.0" text="Brand" />
-                                    <TableColumn fx:id="productprice" prefWidth="75.0" text="Price" />
+                                  <TableColumn fx:id="productName" prefWidth="75.0" text="Name" />
+                                    <TableColumn fx:id="productDesc" prefWidth="75.0" text="Desc" />
+                                    <TableColumn fx:id="productCat" prefWidth="75.0" text="Cat" />
+                                    <TableColumn fx:id="productSize" prefWidth="75.0" text="Size" />
+                                    <TableColumn fx:id="productColor" prefWidth="75.0" text="Color" />
+                                    <TableColumn fx:id="productBrand" prefWidth="75.0" text="Brand" />
+                                    <TableColumn fx:id="productPrice" prefWidth="75.0" text="Price" />
                                     <TableColumn fx:id="productquantity" prefWidth="75.0" text="Quantity" />
                                 </columns>
                                  <columnResizePolicy>
