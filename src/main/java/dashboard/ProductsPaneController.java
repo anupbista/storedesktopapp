@@ -27,6 +27,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import login.LoginController;
 
@@ -231,6 +232,8 @@ public class ProductsPaneController implements Initializable {
         root.getChildren().add(qrView);
         Scene scene = new Scene(root);
         Stage QRCodeStage = new Stage();
+        QRCodeStage.initModality(Modality.WINDOW_MODAL);
+        QRCodeStage.initOwner(LoginController.mainStage);
         QRCodeStage.setScene(scene);
         QRCodeStage.show();
     }

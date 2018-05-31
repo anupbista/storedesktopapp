@@ -67,6 +67,9 @@ public class ActiveCustomerInfoController implements Initializable {
     @FXML
     private TableColumn<?, ?> cartProductPrice;
 
+    @FXML
+    private JFXButton checkoutbtn;
+
     ObservableList<Products> observableListCartProducts = FXCollections.observableArrayList();
 
     @FXML
@@ -79,17 +82,46 @@ public class ActiveCustomerInfoController implements Initializable {
         calculatePrice();
 
         cartProductID.setCellValueFactory(new PropertyValueFactory<>("productID"));
-        cartProductName.setCellValueFactory(new PropertyValueFactory<>("productname"));
-        cartProductCat.setCellValueFactory(new PropertyValueFactory<>("productcategory"));
-        cartProductSize.setCellValueFactory(new PropertyValueFactory<>("productsize"));
-        cartProductColor.setCellValueFactory(new PropertyValueFactory<>("productcolor"));
-        cartProductBrand.setCellValueFactory(new PropertyValueFactory<>("productbrand"));
+        cartProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
+        cartProductCat.setCellValueFactory(new PropertyValueFactory<>("productCat"));
+        cartProductSize.setCellValueFactory(new PropertyValueFactory<>("productSize"));
+        cartProductColor.setCellValueFactory(new PropertyValueFactory<>("productColor"));
+        cartProductBrand.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
         cartProductQuality.setCellValueFactory(new PropertyValueFactory<>("productquantity"));
-        cartProductPrice.setCellValueFactory(new PropertyValueFactory<>("productprice"));
+        cartProductPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
 
         cartProducts.setItems(observableListCartProducts);
 
         setExtraInfo();
+        checkoutStatus();
+    }
+
+    private void checkoutStatus() {
+        String sql = "SELECT userCheckout FROM activeCustomers WHERE username='"+selectedusername+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+               int status = rs.getInt("userCheckout");
+               if (status == 1){
+                   checkoutbtn.setDisable(false);
+               }else{
+                   checkoutbtn.setDisable(true);
+               }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setExtraInfo() {
@@ -97,22 +129,25 @@ public class ActiveCustomerInfoController implements Initializable {
     }
 
     private void itemsOnCart() {
-        String sql = "SELECT * FROM productOnCart WHERE username='"+selectedusername+"'";
+        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
         try {
             connection = dbHandler.getConnection();
             Statement st  = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             int productquantity;
+            String productPrice;
             while (rs.next()){
                 productID = rs.getString("productID");
-                productquantity  = rs.getInt("productquantity");
+                productquantity  = rs.getInt("productQuantity");
+                productPrice  = rs.getString("productPrice");
                 String sql2 = "SELECT * FROM products WHERE productID='"+productID+"'";
                 Statement st2 = connection.createStatement();
                 ResultSet rs2 = st2.executeQuery(sql2);
                 while (rs2.next()){
+                    System.out.println(rs2.getString("productcolor"));
                     observableListCartProducts.add(new Products(rs2.getString("productID"),rs2.getString("productname"),rs2.getString("productcategory"),rs2.getString("productsize"),
-                            rs2.getString("productcolor"),rs2.getString("productbrand"),rs2.getString("productprice"),rs2.getInt("productquantity")));
-                    totalPrice+= Integer.parseInt(rs2.getString("productprice"))*productquantity;
+                            rs2.getString("productcolor"),rs2.getString("productbrand"),productPrice,productquantity));
+                    totalPrice+= Integer.parseInt(productPrice);
                 }
             }
         } catch (SQLException e) {
@@ -177,9 +212,10 @@ public class ActiveCustomerInfoController implements Initializable {
 
     @FXML
     void checkout(ActionEvent event) {
+//        removeProductFromCart();
 //        try {
 //            connection = dbHandler.getConnection();
-//            String sql = "UPDATE products SET productquantity=? WHERE productid='"+productID+"'";
+//            String sql = "DELETE FROM productOnCart WHERE userName=? WHERE productid='"+productID+"'";
 //            PreparedStatement pst = connection.prepareStatement(sql);
 //            pst.setInt();
 //            int rows = st.executeUpdate();
