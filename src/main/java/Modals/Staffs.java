@@ -13,13 +13,14 @@ public class Staffs {
     private String password;
     private File userImage;
     private String gender;
+    private String role;
     private LocalDate dob;
 
     public Staffs(String userName) {
         this.userName = userName;
     }
 
-    public Staffs(String firstName, String lastName, String address, String phoneNumber, String email, String userName, String password, File userImage, String gender, LocalDate dob) {
+    public Staffs(String firstName, String lastName, String address, String phoneNumber, String email, String userName, String password, File userImage, String gender, String role, LocalDate dob) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -29,6 +30,7 @@ public class Staffs {
         this.password = password;
         this.userImage = userImage;
         this.gender = gender;
+        this.role = role;
         this.dob = dob;
     }
 
@@ -70,5 +72,9 @@ public class Staffs {
 
     public LocalDate getDob() {
         return dob;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

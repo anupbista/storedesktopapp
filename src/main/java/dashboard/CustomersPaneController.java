@@ -29,7 +29,7 @@ import java.sql.Statement;
 import java.util.ResourceBundle;
 
 
-public class DashboardPaneController implements Initializable {
+public class CustomersPaneController implements Initializable {
 
     private Parent activeCustomerInfoPane;
     @FXML

@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,12 +21,17 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import login.LoginController;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 
 public class ActiveCustomerInfoController implements Initializable {
@@ -144,7 +151,6 @@ public class ActiveCustomerInfoController implements Initializable {
                 Statement st2 = connection.createStatement();
                 ResultSet rs2 = st2.executeQuery(sql2);
                 while (rs2.next()){
-                    System.out.println(rs2.getString("productcolor"));
                     observableListCartProducts.add(new Products(rs2.getString("productID"),rs2.getString("productname"),rs2.getString("productcategory"),rs2.getString("productsize"),
                             rs2.getString("productcolor"),rs2.getString("productbrand"),productPrice,productquantity));
                     totalPrice+= Integer.parseInt(productPrice);
@@ -168,59 +174,186 @@ public class ActiveCustomerInfoController implements Initializable {
         totalprice.setText("Rs. "+String.valueOf(totalPrice));
     }
 
-//    private void itemsOnCart(){
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st = connection.createStatement();
-//            String sql = "SELECT * FROM productOnCart WHERE username='"+selectedusername+"'";
-//            ResultSet rs = st.executeQuery(sql);
-//            int productquantity;
-//            int i = 0;
-//            while (rs.next()){
-//                productID = rs.getString("productID");
-//                productquantity  = rs.getInt("productquantity");
-//                String sql2 = "SELECT * FROM products WHERE productID='"+productID+"'";
-//                Statement st2 = connection.createStatement();
-//                ResultSet rs2 = st2.executeQuery(sql2);
-//                while (rs2.next()){
-//                    Text productid = new Text(rs2.getString("productID"));
-//                    Text productname = new Text(rs2.getString("productname"));
-//                    Text productprice = new Text("Rs: "+rs2.getString("productprice"));
-//                    Text productq = new Text(String.valueOf(productquantity));
-//                    totalPrice+= Integer.parseInt(rs2.getString("productprice"))*productquantity;
-//                    TilePane tile = new TilePane();
-//                    tile.setPadding(new Insets(10,10,10,10));
-//                    tile.setStyle("-fx-background-color:#eeeeee;");
-//                    tile.setLayoutY(i*80);
-//                    tile.setPrefHeight(60);
-//                    tile.setPrefWidth(600);
-//                    tile.setHgap(30);
-//                    tile.setVgap(10);
-//                    tile.getChildren().add(productid);
-//                    tile.getChildren().add(productname);
-//                    tile.getChildren().add(productprice);
-//                    tile.getChildren().add(productq);
-//                    activeCustomerInfo.getChildren().add(tile);
-//                    i++;
-//                }
-//            }
-//
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
     @FXML
     void checkout(ActionEvent event) {
-//        removeProductFromCart();
-//        try {
-//            connection = dbHandler.getConnection();
-//            String sql = "DELETE FROM productOnCart WHERE userName=? WHERE productid='"+productID+"'";
-//            PreparedStatement pst = connection.prepareStatement(sql);
-//            pst.setInt();
-//            int rows = st.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        removeProductFromCart();
+        checkoutbtn.setDisable(true);
+        ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    private void updateCheckout() {
+        String sql = "UPDATE activeCustomers SET staffCheckout=?, userCheckout=? WHERE username=?";
+        try {
+            connection = dbHandler.getConnection();
+            PreparedStatement st  = connection.prepareStatement(sql);
+            st.setInt(1,0);
+            st.setInt(2,0);
+            st.setString(3,selectedusername);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void updateStaffCheckout() {
+        String sql = "UPDATE activeCustomers SET staffCheckout=? WHERE username=?";
+        try {
+            connection = dbHandler.getConnection();
+            PreparedStatement st  = connection.prepareStatement(sql);
+            st.setInt(1,1);
+            st.setString(2,selectedusername);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void addToSales(){
+        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement psmt = connection.prepareStatement("INSERT into sales(saleID,username,productID,date,totalprice,productQuantity,checkoutBy,time) VALUES(?,?,?,?,?,?,?,?)");
+            while (rs.next()){
+                psmt.setString(1,rs.getString("userName")+rs.getString("productID")+(LocalDateTime.now().toString()));
+                psmt.setString(2,rs.getString("userName"));
+                psmt.setString(3,rs.getString("productID"));
+                psmt.setString(4, (new LocalDate().toString()));
+                psmt.setString(5,Integer.toString(Integer.parseInt(rs.getString("productQuantity"))*Integer.parseInt(rs.getString("productPrice"))));
+                psmt.setString(6,rs.getString("productQuantity"));
+                psmt.setString(7,LoginController.user);
+                psmt.setString(8,(new LocalTime().toString()));
+
+                psmt.executeUpdate();
+            }
+            System.out.println("Added to sales");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void removeProductFromCart() {
+        clearBill();
+        addToBill();
+        addToSales();
+        String sql = "DELETE FROM productOnCart WHERE userName='"+selectedusername+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Payment Failed!!! Retry");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Payment Successful!!!");
+                alert.showAndWait();
+                updateStaffCheckout();
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void clearBill() {
+        String sql = "DELETE FROM checkoutBill WHERE userName='"+selectedusername+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                System.out.println("Bill Not Cleared");
+            }
+            else {
+                System.out.println("Bill Cleared");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void addToBill() {
+        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            PreparedStatement psmt = connection.prepareStatement("INSERT into checkoutBill(userName,productID,productName,productQuantity,productPrice,checkoutBy) VALUES(?,?,?,?,?,?)");
+            while (rs.next()){
+                psmt.setString(1,rs.getString("userName"));
+                psmt.setString(2,rs.getString("productID"));
+                psmt.setString(3,rs.getString("productName"));
+                psmt.setInt(4,Integer.parseInt(rs.getString("productQuantity")));
+                psmt.setString(5,rs.getString("productPrice"));
+                psmt.setString(6,LoginController.user);
+
+                psmt.executeUpdate();
+            }
+            System.out.println("Added to BIll");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

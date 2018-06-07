@@ -2,6 +2,10 @@ package signup;
 
 import com.jfoenix.controls.*;
 import javafx.animation.FadeTransition;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -92,6 +96,10 @@ public class SignUpController implements Initializable {
     private Label error_signup_password_message;
     @FXML
     private Label error_re_password_message;
+    @FXML
+    private ComboBox staffRole;
+
+    ObservableList<String> staffRoleList = FXCollections.observableArrayList("Admin","Cashier","Inventory Manager");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -111,6 +119,17 @@ public class SignUpController implements Initializable {
                 LoginController.resetValidationErrorMessage(error_re_password_message);
             }
         });
+
+        staffRole.setValue("Admin");
+        staffRole.setItems(staffRoleList);
+
+        staffRole.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                staffRole.setValue(newValue);
+            }
+        });
+
     }
 
     @FXML
@@ -169,10 +188,10 @@ public class SignUpController implements Initializable {
                 userImage = defaultSelectedFile;
 
             }
-            Staffs staffs = new Staffs(first_name.getText(), last_name.getText(), address.getText(), phone_number.getText(),email.getText(),username.getText(),password.getText(),userImage,gender,dob.getValue());
+            Staffs staffs = new Staffs(first_name.getText(), last_name.getText(), address.getText(), phone_number.getText(),email.getText(),username.getText(),password.getText(),userImage,gender,staffRole.getValue().toString(),dob.getValue());
 
-            String sql = "INSERT INTO staffs(first_name,last_name,address,phone_number,email,username,password,user_image,gender,dob)"
-                    + "values(?,?,?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO staffs(first_name,last_name,address,phone_number,email,username,password,user_image,gender,dob,role)"
+                    + "values(?,?,?,?,?,?,?,?,?,?,?)";
             try {
                 connection = dbHandler.getConnection();
                 pst = connection.prepareStatement(sql);
@@ -190,6 +209,7 @@ public class SignUpController implements Initializable {
 
                 pst.setString(9,staffs.getGender());
                 pst.setString(10, String.valueOf(staffs.getDob()));
+                pst.setString(11,staffs.getRole());
                 pst.executeUpdate();
 
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -215,9 +235,21 @@ public class SignUpController implements Initializable {
                     e.printStackTrace();
                 }
             }
+            LoginController.user=username.getText();
+            String role = staffs.getRole();
             try {
-                LoginController.user=username.getText();
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                switch (role){
+                    case "Admin":
+                        loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                        break;
+                    case "Cashier":
+                        loader = new FXMLLoader(getClass().getResource("/CashierDashboard.fxml"));
+                        break;
+                    case "Inventory Manager":
+                        loader = new FXMLLoader(getClass().getResource("/InventoryDashboard.fxml"));
+                        break;
+                }
                 dashboardPane = loader.load();
             } catch (IOException e) {
                 e.printStackTrace();

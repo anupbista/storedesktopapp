@@ -17,7 +17,7 @@ public class DBHandler extends Config{
 //        }
         try {
             dbconnection = DriverManager.getConnection(connectionString,dbuser,dbpass);
-            System.out.println("Connected to Database");
+//            System.out.println("Connected to Database");
         }
         catch (SQLException e){
             e.getStackTrace();

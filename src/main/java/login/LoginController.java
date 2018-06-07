@@ -141,7 +141,7 @@ public class LoginController implements Initializable {
         }
         else{
             connection = dbHandler.getConnection();
-            String sql = "SELECT username, password FROM staffs where username=? and password=?";
+            String sql = "SELECT username, password,role FROM staffs where username=? and password=?";
             try {
                 pst = connection.prepareStatement(sql);
                 pst.setString(1,username.getText());
@@ -149,8 +149,10 @@ public class LoginController implements Initializable {
 
                 ResultSet rs = pst.executeQuery();
                 int count = 0;
+                String role="Admin";
                 while (rs.next()){
                     count++;
+                    role = rs.getString("role");
                 }
                 if (count ==1){
                     System.out.println("Login Successfully");
@@ -159,7 +161,8 @@ public class LoginController implements Initializable {
                         Utils.updatePropValue("userName", username.getText());
                         Utils.updatePropValue("userPass", password.getText());
                     }
-                    executeLoginAction(loginPane);
+
+                    executeLoginAction(loginPane,role);
                 }
                 else{
                     System.out.println("Login Failed");
@@ -190,9 +193,20 @@ public class LoginController implements Initializable {
         }
     }
 
-    private void executeLoginAction(Node loginRoot){
+    private void executeLoginAction(Node loginRoot, String role){
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Dashboard.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+            switch (role){
+                case "Admin":
+                    loader = new FXMLLoader(getClass().getResource("/AdminDashboard.fxml"));
+                    break;
+                case "Cashier":
+                    loader = new FXMLLoader(getClass().getResource("/CashierDashboard.fxml"));
+                    break;
+                case "Inventory Manager":
+                    loader = new FXMLLoader(getClass().getResource("/InventoryDashboard.fxml"));
+                    break;
+            }
             dashboardPane = loader.load();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="dashboard" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.InventoryDashboardController">
+   <children>
+      <AnchorPane prefHeight="600.0" prefWidth="210.0" style="-fx-background-color: #636e72;">
+         <children>
+            <Pane prefHeight="42.0" prefWidth="212.0" style="-fx-background-color: #535c60;">
+               <children>
+                  <Text fill="WHITE" layoutX="59.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-weight: bold;" text="Dashboard" textOrigin="CENTER">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+            <Pane layoutY="42.0" prefHeight="253.0" prefWidth="212.0">
+               <children>
+                  <JFXButton fx:id="profileBtn" layoutY="48.0" onAction="#loadProfilePane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Profile" textFill="WHITE">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="productBtn" onAction="#loadProductPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Products" textFill="WHITE">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <JFXButton fx:id="settingBtn" layoutY="126.0" onAction="#loadSettingsPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Settings" textFill="WHITE">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="16.0" layoutY="70.0" size="14" text="" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="GEAR" layoutX="16.0" layoutY="150.0" size="14" text="" />
+                  <FontAwesomeIconView fill="WHITE" layoutX="17.0" layoutY="24.0" size="14" />
+                  <JFXButton fx:id="notiBtn" layoutX="-1.0" layoutY="88.0" onAction="#loadNotificationsPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Out of Stock" textFill="WHITE">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </JFXButton>
+                  <FontAwesomeIconView fill="WHITE" layoutX="16.0" layoutY="112.0" size="14" text="" />
+                  <Circle fill="#4caf50" layoutX="183.0" layoutY="108.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Text fx:id="notiCount" fill="WHITE" layoutX="179.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+               </children>
+            </Pane>
+            <Text fill="#e2e2e2" layoutX="10.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="© 2018 ADN ALL RIGHTS RESERVED" textAlignment="CENTER" wrappingWidth="191.00000381469727">
+               <font>
+                  <Font size="8.0" />
+               </font>
+            </Text>
+            <JFXButton fx:id="logoutBtn" layoutY="529.0" onAction="#logout" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" text="Logout" textAlignment="CENTER" textFill="WHITE">
+               <font>
+                  <Font size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+         </children>
+      </AnchorPane>
+      <StackPane fx:id="dashboard_main_content" layoutX="212.0" prefHeight="600.0" prefWidth="688.0" />
+   </children>
+</AnchorPane>

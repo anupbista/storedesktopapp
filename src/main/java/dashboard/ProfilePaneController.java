@@ -33,7 +33,6 @@ public class ProfilePaneController implements Initializable {
         dbHandler = new DBHandler();
         setProflePicture();
         userName.setText(LoginController.user);
-        System.out.println(LoginController.user);
     }
 
     private void setProflePicture(){

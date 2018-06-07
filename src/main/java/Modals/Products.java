@@ -14,6 +14,12 @@ public class Products {
     private int productquantity;
     private File productImage;
 
+    public Products(String productID, String productName, int productquantity) {
+        this.productID = productID;
+        this.productName = productName;
+        this.productquantity = productquantity;
+    }
+
     public Products(String productID, String productName, String productDesc, String productCat, String productSize, String productColor, String productBrand, String productPrice, int productquantity, File productImage) {
         this.productID = productID;
         this.productName = productName;
