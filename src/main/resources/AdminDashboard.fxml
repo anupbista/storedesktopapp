@@ -6,10 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="dashboard" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.AdminDashboardController">
+<AnchorPane fx:id="dashboard" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.AdminDashboardController">
    <children>
       <AnchorPane prefHeight="600.0" prefWidth="210.0" style="-fx-background-color: #636e72;">
          <children>
@@ -48,7 +49,7 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </JFXButton>
-                  <JFXButton fx:id="settingBtn" layoutY="140.0" onAction="#loadSettingsPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Settings" textFill="WHITE">
+                  <JFXButton fx:id="settingBtn" layoutX="-1.0" layoutY="179.0" onAction="#loadSettingsPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Settings" textFill="WHITE">
                      <font>
                         <Font size="12.0" />
                      </font>
@@ -58,7 +59,7 @@
                   </JFXButton>
                   <FontAwesomeIconView fill="WHITE" glyphName="USER" layoutX="16.0" layoutY="70.0" size="14" text="" />
                   <FontAwesomeIconView fill="WHITE" glyphName="DASHBOARD" layoutX="16.0" layoutY="23.0" size="14" text="" />
-                  <FontAwesomeIconView fill="WHITE" glyphName="GEAR" layoutX="19.0" layoutY="164.0" size="14" text="" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="GEAR" layoutX="18.0" layoutY="203.0" size="14" text="" />
                   <FontAwesomeIconView fill="WHITE" layoutX="16.0" layoutY="116.0" size="14" />
                </children>
             </Pane>
@@ -75,6 +76,17 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
+            <JFXButton fx:id="notiBtn" layoutY="180.0" onAction="#loadNotificationsPane" prefHeight="40.0" prefWidth="212.0" styleClass="button_menu" stylesheets="@css/style.css" text="Out of Stock" textFill="WHITE">
+               <font>
+                  <Font size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </JFXButton>
+            <FontAwesomeIconView fill="WHITE" layoutX="17.0" layoutY="204.0" size="14" text="" />
+            <Circle fill="#4caf50" layoutX="184.0" layoutY="200.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+            <Text fx:id="notiCount" fill="WHITE" layoutX="180.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
          </children>
       </AnchorPane>
       <StackPane fx:id="dashboard_main_content" layoutX="212.0" prefHeight="600.0" prefWidth="688.0" />

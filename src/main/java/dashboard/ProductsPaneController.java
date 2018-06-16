@@ -9,6 +9,8 @@ import com.google.zxing.qrcode.QRCodeWriter;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import dbConnection.DBHandler;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -90,7 +92,7 @@ public class ProductsPaneController implements Initializable {
     private JFXTextField addproductsize;
 
     @FXML
-    private JFXTextField addproductcat;
+    private ComboBox addproductcat;
     @FXML
     private JFXTextField addproductcolor;
 
@@ -147,6 +149,7 @@ public class ProductsPaneController implements Initializable {
     private String productImagePath;
     @FXML
     private ImageView productImage;
+    ObservableList<String> productCatList = FXCollections.observableArrayList("Drinks","Pant","Shirts","Shoes","Watch","Jacket","Glasses","Tshirts","Electroic");
 
     ObservableList<Products> observableListAllProducts = FXCollections.observableArrayList();
 
@@ -175,6 +178,16 @@ public class ProductsPaneController implements Initializable {
             try {
                 generateQRCode();
             }catch (NullPointerException e){}
+        });
+
+        addproductcat.setValue("Drinks");
+        addproductcat.setItems(productCatList);
+
+        addproductcat.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                addproductcat.setValue(newValue);
+            }
         });
 
     }
@@ -326,7 +339,7 @@ public class ProductsPaneController implements Initializable {
 
             }
 
-            Products products = new Products(addproductid.getText(), addproductname.getText(), addproductdesc.getText(), addproductcat.getText(), addproductsize.getText(), addproductcolor.getText(),
+            Products products = new Products(addproductid.getText(), addproductname.getText(), addproductdesc.getText(), addproductcat.getValue().toString(), addproductsize.getText(), addproductcolor.getText(),
                     addproductbrand.getText(), addproductprice.getText(), Integer.parseInt(addproductquantity.getText()), userImage);
             String sql = "INSERT INTO products values(?,?,?,?,?,?,?,?,?,?)";
             try {
@@ -355,7 +368,6 @@ public class ProductsPaneController implements Initializable {
                     addproductid.clear();
                     addproductname.clear();
                     addproductdesc.clear();
-                    addproductcat.clear();
                     addproductsize.clear();
                     addproductcolor.clear();
                     addproductbrand.clear();
@@ -605,7 +617,7 @@ public class ProductsPaneController implements Initializable {
         String productId = addproductid.getText();
         String productName = addproductname.getText();
         String productDesc = addproductdesc.getText();
-        String productCat = addproductcat.getText();
+        String productCat = addproductcat.getValue().toString();
         String productPrice = addproductprice.getText();
         String productQuantity = addproductquantity.getText();
         if ((productId == null || productId.isEmpty()) || (productName == null || productName.isEmpty()) || (productDesc == null || productDesc.isEmpty()) ||

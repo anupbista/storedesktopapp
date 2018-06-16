@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.Tab?>
@@ -24,6 +25,7 @@
                                     <TableColumn fx:id="a_customer_username" prefWidth="160.0" text="username" />
                                  </columns>
                               </TableView>
+                              <JFXButton layoutX="611.0" layoutY="14.0" onAction="#refreshloadActiveCustomers" text="Reload" />
                            </children>
                                 </AnchorPane>
                             </content>
@@ -32,7 +34,7 @@
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
-                                        <TableView fx:id="allCustomerLists" layoutX="23.0" layoutY="22.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@css/style.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                        <TableView fx:id="allCustomerLists" layoutX="23.0" layoutY="22.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@css/style.css" tableMenuButtonVisible="true" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
                                             <columns>
                                                 <TableColumn fx:id="customer_username" prefWidth="107.0" text="username" />
                                                 <TableColumn fx:id="customer_firstname" prefWidth="105.0" text="First Name" />

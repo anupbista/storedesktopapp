@@ -103,6 +103,14 @@ public class ActiveCustomerInfoController implements Initializable {
         checkoutStatus();
     }
 
+    @FXML
+    public void refreshloadActiveCustomersInfo() {
+        observableListCartProducts.clear();
+        itemsOnCart();
+        checkoutStatus();
+        System.out.println("Reloaded");
+    }
+
     private void checkoutStatus() {
         String sql = "SELECT userCheckout FROM activeCustomers WHERE username='"+selectedusername+"'";
         try {
@@ -283,7 +291,6 @@ public class ActiveCustomerInfoController implements Initializable {
                 alert.setContentText("Payment Successful!!!");
                 alert.showAndWait();
                 updateStaffCheckout();
-
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -298,6 +305,7 @@ public class ActiveCustomerInfoController implements Initializable {
             }
         }
     }
+
 
     private void clearBill() {
         String sql = "DELETE FROM checkoutBill WHERE userName='"+selectedusername+"'";

@@ -89,7 +89,9 @@ public class CustomersPaneController implements Initializable {
         allCustomerLists.setItems(observableLists);
 
         a_customersLists.setOnMouseClicked(event -> {
-            activeCustomerInfo();
+            try {
+                activeCustomerInfo();
+            }catch (NullPointerException e){}
         });
 
         a_customersLists.getSelectionModel().select(0);
@@ -115,6 +117,12 @@ public class CustomersPaneController implements Initializable {
         }
     }
 
+    @FXML
+    public void refreshloadActiveCustomers() {
+        observableList.clear();
+        activeCustomerLists();
+        System.out.println("Reloaded");
+    }
 
     private void customerLists(){
         String sql = "SELECT * FROM customers";

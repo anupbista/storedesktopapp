@@ -1,5 +1,6 @@
 package dashboard;
 
+import Modals.Products;
 import dbConnection.DBHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,13 +20,38 @@ import java.util.ResourceBundle;
 
 public class ProfilePaneController implements Initializable {
 
+    private Connection connection;
+    private DBHandler dbHandler;
+
+    @FXML
+    private Text userName;
+
     @FXML
     private ImageView userImage;
 
     @FXML
-    private Text userName;
-    private Connection connection;
-    private DBHandler dbHandler;
+    private Text fullName;
+
+    @FXML
+    private Text address;
+
+    @FXML
+    private Text phoneNumber;
+
+    @FXML
+    private Text email;
+
+    @FXML
+    private Text gender;
+
+    @FXML
+    private Text dob;
+
+    @FXML
+    private Text role;
+
+    @FXML
+    private Text password;
 
 
     @Override
@@ -33,6 +59,38 @@ public class ProfilePaneController implements Initializable {
         dbHandler = new DBHandler();
         setProflePicture();
         userName.setText(LoginController.user);
+        getUserInfo();
+    }
+
+    private void getUserInfo() {
+        String sql = "SELECT * FROM staffs WHERE username='"+LoginController.user+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                fullName.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+                address.setText(rs.getString("address"));
+                phoneNumber.setText(rs.getString("phone_number"));
+                email.setText(rs.getString("email"));
+                gender.setText(rs.getString("gender"));
+                dob.setText(rs.getString("dob"));
+                role.setText(rs.getString("role"));
+                password.setText(rs.getString("password"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void setProflePicture(){

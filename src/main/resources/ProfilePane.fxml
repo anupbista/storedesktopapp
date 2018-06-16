@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -8,18 +9,36 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-<StackPane prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.ProfilePaneController">
+<StackPane prefWidth="688.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="dashboard.ProfilePaneController">
    <children>
-      <AnchorPane prefHeight="400.0" prefWidth="600.0">
+      <AnchorPane prefHeight="600.0" prefWidth="600.0">
          <children>
-            <Text fx:id="userName" layoutX="356.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" AnchorPane.leftAnchor="356.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d9dfe4" height="385.0" layoutX="140.0" layoutY="177.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="397.0" />
+            <Text fx:id="userName" layoutX="344.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" AnchorPane.leftAnchor="344.0" />
             <Rectangle fill="#89c68b" height="137.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="688.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <ImageView fx:id="userImage" fitHeight="81.0" fitWidth="123.0" layoutX="298.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/user.png" />
                </image>
             </ImageView>
-            <Label layoutX="250.0" layoutY="182.0" prefWidth="81.0" text="UserName:" />
+            <Label layoutX="190.0" layoutY="200.0" prefWidth="81.0" text="Username:" />
+            <ButtonBar layoutX="244.0" layoutY="560.0" prefHeight="40.0" prefWidth="200.0" />
+            <Label layoutX="190.0" layoutY="240.0" prefWidth="81.0" text="Name:" />
+            <Label layoutX="190.0" layoutY="280.0" prefWidth="81.0" text="Address:" />
+            <Label layoutX="190.0" layoutY="320.0" prefHeight="16.0" prefWidth="106.0" text="Phone Number:" />
+            <Label layoutX="190.0" layoutY="360.0" prefWidth="81.0" text="Email:" />
+            <Label layoutX="190.0" layoutY="400.0" prefWidth="81.0" text="Gender:" />
+            <Label layoutX="190.0" layoutY="440.0" prefWidth="81.0" text="DOB:" />
+            <Label layoutX="190.0" layoutY="480.0" prefWidth="81.0" text="Role:" />
+            <Label layoutX="190.0" layoutY="520.0" prefWidth="81.0" text="Password:" />
+            <Text fx:id="fullName" layoutX="344.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="address" layoutX="344.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="phoneNumber" layoutX="344.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="email" layoutX="344.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="gender" layoutX="344.0" layoutY="413.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="dob" layoutX="344.0" layoutY="453.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="role" layoutX="344.0" layoutY="493.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
+            <Text fx:id="password" layoutX="344.0" layoutY="533.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" />
          </children>
       </AnchorPane>
    </children>
