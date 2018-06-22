@@ -35,7 +35,9 @@ import login.LoginController;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -104,6 +106,7 @@ public class ProductsPaneController implements Initializable {
 
     @FXML
     private JFXTextField addproductquantity;
+
     @FXML
     private Label error_addProduct;
     private Boolean validationError = false;
@@ -149,7 +152,7 @@ public class ProductsPaneController implements Initializable {
     private String productImagePath;
     @FXML
     private ImageView productImage;
-    ObservableList<String> productCatList = FXCollections.observableArrayList("Drinks","Pant","Shirts","Shoes","Watch","Jacket","Glasses","Tshirts","Electroic");
+    ObservableList<String> productCatList = FXCollections.observableArrayList("Drinks", "Pant", "Shirts", "Shoes", "Watch", "Jacket", "Glasses", "Tshirts", "Electroic");
 
     ObservableList<Products> observableListAllProducts = FXCollections.observableArrayList();
 
@@ -157,11 +160,37 @@ public class ProductsPaneController implements Initializable {
     private DBHandler dbHandler;
     private Statement st;
 
+
+    //    sale
+    @FXML
+    private JFXTextField addSaleProductID;
+
+    @FXML
+    private JFXTextField salePrice;
+
+    @FXML
+    private JFXTextField deleteSaleProductID;
+
+    //    sale view
+    @FXML
+    private TableView<Products> allsaleProducts;
+
+    @FXML
+    private TableColumn<?, ?> saleProductID;
+
+    @FXML
+    private TableColumn<?, ?> saleProductPrice;
+    @FXML
+    private JFXTextField searchSaleProducts;
+
+    ObservableList<Products> observableListSaleProducts = FXCollections.observableArrayList();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DBHandler();
 
         loadAllProducts();
+
         productID.setCellValueFactory(new PropertyValueFactory<>("productID"));
         productName.setCellValueFactory(new PropertyValueFactory<>("productName"));
         productDesc.setCellValueFactory(new PropertyValueFactory<>("productDesc"));
@@ -174,10 +203,18 @@ public class ProductsPaneController implements Initializable {
 
         allProducts.setItems(observableListAllProducts);
 
+        loadSaleProducts();
+
+        saleProductID.setCellValueFactory(new PropertyValueFactory<>("productID"));
+        saleProductPrice.setCellValueFactory(new PropertyValueFactory<>("saleProductPrice"));
+
+        allsaleProducts.setItems(observableListSaleProducts);
+
         allProducts.setOnMouseClicked(event -> {
             try {
                 generateQRCode();
-            }catch (NullPointerException e){}
+            } catch (NullPointerException e) {
+            }
         });
 
         addproductcat.setValue("Drinks");
@@ -190,6 +227,30 @@ public class ProductsPaneController implements Initializable {
             }
         });
 
+
+    }
+
+    private void loadSaleProducts() {
+        String sql = "SELECT * FROM saleProducts";
+        try {
+            connection = dbHandler.getConnection();
+            st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                observableListSaleProducts.add(new Products(rs.getString("productID"), rs.getString("salePrice")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 
@@ -303,6 +364,27 @@ public class ProductsPaneController implements Initializable {
         sortedList.comparatorProperty().bind(allProducts.comparatorProperty());
         allProducts.setItems(sortedList);
     }
+
+    @FXML
+    void searchAllSaleProducts(KeyEvent event) {
+        FilteredList<Products> filteredList = new FilteredList<>(observableListSaleProducts, p -> true);
+        searchSaleProducts.textProperty().addListener((observable, oldvalue, newvalue) -> {
+            filteredList.setPredicate(products -> {
+                if (newvalue == null || newvalue.isEmpty()) {
+                    return true;
+                }
+                String typedText = newvalue.toLowerCase();
+                if (products.getProductID().toLowerCase().indexOf(typedText) != -1) {
+                    return true;
+                }
+                return false;
+            });
+        });
+        SortedList<Products> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(allsaleProducts.comparatorProperty());
+        allsaleProducts.setItems(sortedList);
+    }
+
 
     @FXML
     void addProduct(ActionEvent event) {
@@ -426,6 +508,12 @@ public class ProductsPaneController implements Initializable {
     public void refreshloadAllProducts() {
         observableListAllProducts.clear();
         loadAllProducts();
+    }
+
+    @FXML
+    void saleProductReload(ActionEvent event) {
+        observableListSaleProducts.clear();
+        loadSaleProducts();
     }
 
     @FXML
@@ -553,7 +641,7 @@ public class ProductsPaneController implements Initializable {
             alert.showAndWait();
         } else {
             String deleteproductID = deleteProductID.getText();
-            String sql = "SELECT * FROM products where productID=" + deleteproductID + "";
+            String sql = "SELECT * FROM products where productID='" + deleteproductID + "'";
             try {
                 connection = dbHandler.getConnection();
                 st = connection.createStatement();
@@ -646,6 +734,224 @@ public class ProductsPaneController implements Initializable {
             return false;
         } else {
             return true;
+        }
+    }
+
+    //    Sales
+
+    private Boolean addSaleValidateEmpty() {
+        String addSaleProductId = addSaleProductID.getText();
+        String saleprice = salePrice.getText();
+        if (addSaleProductId == null || addSaleProductId.isEmpty() || saleprice == null || saleprice.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("All fields must be filled !!!");
+            alert.showAndWait();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private Boolean deleteSaleValidateEmpty() {
+        String deleteSaleProductId = deleteSaleProductID.getText();
+        if (deleteSaleProductId == null || deleteSaleProductId.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("All fields must be filled !!!");
+            alert.showAndWait();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @FXML
+    void addSaleProduct(ActionEvent event) {
+        if (addSaleValidateEmpty() && checkValidProduct()) {
+
+            String addSaleProductid = addSaleProductID.getText();
+            String sql = "SELECT * FROM saleProducts where productID='" + addSaleProductid + "'";
+            try {
+                connection = dbHandler.getConnection();
+                Statement st = connection.createStatement();
+                ResultSet rs = st.executeQuery(sql);
+                if (rs.isBeforeFirst()) {
+//                        update
+                    sql = "UPDATE saleProducts SET salePrice=? WHERE productID=?";
+
+                    try {
+                        PreparedStatement pst = connection.prepareStatement(sql);
+
+                        try {
+                            pst.setString(1, salePrice.getText());
+                            pst.setString(2, addSaleProductID.getText());
+
+                            pst.executeUpdate();
+
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Successfully Updated");
+                            alert.showAndWait();
+
+                            addSaleProductID.clear();
+                            salePrice.clear();
+
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("ERROR Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to update. Try again");
+                            alert.showAndWait();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //                        insert
+                    sql = "INSERT INTO saleProducts(productID, salePrice) values(?,?)";
+                    try {
+                        PreparedStatement pst = connection.prepareStatement(sql);
+
+                        try {
+                            pst.setString(1, addSaleProductID.getText());
+                            pst.setString(2, salePrice.getText());
+
+                            pst.executeUpdate();
+
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Information Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Successfully Added");
+                            alert.showAndWait();
+
+                            addSaleProductID.clear();
+                            salePrice.clear();
+
+
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("ERROR Dialog");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Failed to add. Try again");
+                            alert.showAndWait();
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Enter valid product id to add to sales !!!");
+                alert.showAndWait();
+            } finally {
+                try {
+                    if (connection != null) {
+                        connection.close();
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private boolean checkValidProduct() {
+        String addSaleProductid = addSaleProductID.getText();
+        String sql = "SELECT * FROM products where productID='" + addSaleProductid + "'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.isBeforeFirst()) {
+                return true;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Enter valid product id to add to sales !!!");
+                alert.showAndWait();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Enter valid product id to add to sales !!!");
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    private boolean checkValidSaleProduct() {
+        String deleteSaleProductid = deleteSaleProductID.getText();
+        String sql = "SELECT * FROM saleProducts where productID='" + deleteSaleProductid + "'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if (rs.isBeforeFirst()) {
+                return true;
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Enter valid product id to delete from sales !!!");
+                alert.showAndWait();
+                return false;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("ERROR Dialog");
+            alert.setHeaderText(null);
+            alert.setContentText("Enter valid product id to delete from sales !!!");
+            alert.showAndWait();
+            return false;
+        }
+    }
+
+    @FXML
+    void deleteSaleProduct(ActionEvent event) {
+        if (deleteSaleValidateEmpty() && checkValidSaleProduct()) {
+            String deleteSaleProductid = deleteSaleProductID.getText();
+            String sql = "DELETE FROM saleProducts where productID='" + deleteSaleProductid + "'";
+            try {
+                connection = dbHandler.getConnection();
+                Statement st = connection.createStatement();
+                st.executeUpdate(sql);
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("INFORMATION Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Successfuly deleted !!!");
+                alert.showAndWait();
+
+                deleteSaleProductID.clear();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("ERROR Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to delete from sale !!!");
+                alert.showAndWait();
+            }
         }
     }
 }
