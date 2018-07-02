@@ -34,6 +34,7 @@ public class AdminDashboardController implements Initializable {
     private StackPane profilePane;
     private StackPane productPane;
     private StackPane settingsPane;
+    private StackPane reportsPane;
     private StackPane notiPane;
     private StackPane dashboardPane;
     @FXML
@@ -46,6 +47,8 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private JFXButton settingBtn;
+    @FXML
+    private JFXButton reportsBtn;
     private JFXButton[] buttons;
 
     @FXML
@@ -61,7 +64,7 @@ public class AdminDashboardController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        buttons = new JFXButton[]{dashboardBtn,profileBtn,productBtn,notiBtn,settingBtn};
+        buttons = new JFXButton[]{dashboardBtn,profileBtn,productBtn,notiBtn,reportsBtn,settingBtn};
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/CustomersPane.fxml"));
             dashboardPane = loader.load();
@@ -183,6 +186,19 @@ public class AdminDashboardController implements Initializable {
         }
         setDashSideButtonStatus((JFXButton) event.getTarget());
         setDashContent(notiPane);
+    }
+
+    @FXML
+    void loadReportsPane(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Reports.fxml"));
+            reportsPane = loader.load();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+        setDashSideButtonStatus((JFXButton) event.getTarget());
+        setDashContent(reportsPane);
     }
 
     public void setDashContent(Node node){
