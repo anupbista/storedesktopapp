@@ -16,10 +16,10 @@
               <columns>
                 <TableColumn fx:id="cartProductID" prefWidth="75.0" text="ID" />
                 <TableColumn fx:id="cartProductName" prefWidth="75.0" text="Name" />
-                  <TableColumn fx:id="cartProductCat" prefWidth="75.0" text="Category" />
                   <TableColumn fx:id="cartProductSize" prefWidth="90.0" text="Size" />
                   <TableColumn fx:id="cartProductColor" prefWidth="75.0" text="Color" />
                   <TableColumn fx:id="cartProductBrand" prefWidth="75.0" text="Brand" />
+                  <TableColumn fx:id="cartProductHD" prefWidth="75.0" text="HD" />
                   <TableColumn fx:id="cartProductQuality" prefWidth="75.0" text="Quantity" />
                   <TableColumn fx:id="cartProductPrice" prefWidth="75.0" text="Price" />
               </columns>

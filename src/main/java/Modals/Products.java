@@ -13,7 +13,17 @@ public class Products {
     private String productPrice;
     private int productquantity;
     private File productImage;
+
+    public String getHomedelivery() {
+        return homedelivery;
+    }
+
+    public void setHomedelivery(String homedelivery) {
+        this.homedelivery = homedelivery;
+    }
+
     private String saleProductPrice;
+    private String homedelivery;
 
     public Products(String productID, String productName, int productquantity) {
         this.productID = productID;
@@ -51,15 +61,15 @@ public class Products {
         this.productquantity = productquantity;
     }
 
-    public Products(String productID, String productName, String productCat, String productSize, String productColor, String productBrand, String productPrice, int productquantity) {
+    public Products(String productID, String productName, String productSize, String productColor, String productBrand, String productPrice, int productquantity, String homedelivery) {
         this.productID = productID;
         this.productName = productName;
-        this.productCat = productCat;
         this.productSize = productSize;
         this.productColor = productColor;
         this.productBrand = productBrand;
         this.productPrice = productPrice;
         this.productquantity = productquantity;
+        this.homedelivery = homedelivery;
     }
 
     public Products(String productID, String productName, String productDesc, String productCat, String productSize, String productColor, String productBrand, String productPrice) {

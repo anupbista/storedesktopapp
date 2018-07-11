@@ -19,13 +19,15 @@ import login.LoginController;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
+
+import static dashboard.ActiveCustomerInfoController.selectedusername;
 
 public class AdminDashboardController implements Initializable {
 
@@ -78,6 +80,7 @@ public class AdminDashboardController implements Initializable {
         notiNumber=0;
         notiCount.setText(String.valueOf(notiNumber));
         showNotiCount();
+
     }
 
     private void showNotiCount() {

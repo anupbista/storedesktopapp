@@ -31,8 +31,11 @@ import java.awt.*;
 import java.io.*;
 import java.net.URL;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 public class ActiveCustomerInfoController implements Initializable {
 
@@ -57,7 +60,7 @@ public class ActiveCustomerInfoController implements Initializable {
     private TableColumn<?, ?> cartProductName;
 
     @FXML
-    private TableColumn<?, ?> cartProductCat;
+    private TableColumn<?, ?> cartProductHD;
 
     @FXML
     private TableColumn<?, ?> cartProductSize;
@@ -90,12 +93,13 @@ public class ActiveCustomerInfoController implements Initializable {
 
         cartProductID.setCellValueFactory(new PropertyValueFactory<>("productID"));
         cartProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        cartProductCat.setCellValueFactory(new PropertyValueFactory<>("productCat"));
         cartProductSize.setCellValueFactory(new PropertyValueFactory<>("productSize"));
         cartProductColor.setCellValueFactory(new PropertyValueFactory<>("productColor"));
         cartProductBrand.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
+        cartProductHD.setCellValueFactory(new PropertyValueFactory<>("homedelivery"));
         cartProductQuality.setCellValueFactory(new PropertyValueFactory<>("productquantity"));
         cartProductPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+
 
         cartProducts.setItems(observableListCartProducts);
 
@@ -151,7 +155,15 @@ public class ActiveCustomerInfoController implements Initializable {
             ResultSet rs = st.executeQuery(sql);
             int productquantity;
             String productPrice;
+            String hm;
             while (rs.next()){
+
+                if (rs.getString("homedelivery").equals("1")){
+                    hm = "Y";
+                }else{
+                    hm = "N";
+                }
+                System.out.println(hm);
                 productID = rs.getString("productID");
                 productquantity  = rs.getInt("productQuantity");
                 productPrice  = rs.getString("productPrice");
@@ -159,9 +171,10 @@ public class ActiveCustomerInfoController implements Initializable {
                 Statement st2 = connection.createStatement();
                 ResultSet rs2 = st2.executeQuery(sql2);
                 while (rs2.next()){
-                    observableListCartProducts.add(new Products(rs2.getString("productID"),rs2.getString("productname"),rs2.getString("productcategory"),rs2.getString("productsize"),
-                            rs2.getString("productcolor"),rs2.getString("productbrand"),productPrice,productquantity));
+                    observableListCartProducts.add(new Products(rs2.getString("productID"),rs2.getString("productname"),rs2.getString("productsize"),
+                            rs2.getString("productcolor"),rs2.getString("productbrand"),productPrice,productquantity,hm));
                     totalPrice+= Integer.parseInt(productPrice);
+
                 }
             }
         } catch (SQLException e) {
@@ -184,9 +197,65 @@ public class ActiveCustomerInfoController implements Initializable {
 
     @FXML
     void checkout(ActionEvent event) {
+        addtoOrders();
         removeProductFromCart();
         checkoutbtn.setDisable(true);
         ((Node)(event.getSource())).getScene().getWindow().hide();
+    }
+
+    private void addtoOrders() {
+        SimpleDateFormat fd = new SimpleDateFormat ("yyyy.MM.dd");
+        SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss a");
+        String homed = "1";
+        String sqlOrderProducts = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"' and homedelivery="+homed+"";
+        try {
+            connection = dbHandler.getConnection();
+
+
+
+            Statement st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sqlOrderProducts);
+
+            PreparedStatement psmt = connection.prepareStatement("INSERT into newOrder(newOrderID,username,newOrderDate,newOrderTime) VALUES(?,?,?,?)");
+
+            String uniqueID = UUID.randomUUID().toString();
+            psmt.setString(1,uniqueID);
+            psmt.setString(2,selectedusername);
+
+            psmt.setString(3, fd.format(new Date()));
+            psmt.setString(4, ft.format(new Date()));
+
+            psmt.executeUpdate();
+
+            System.out.println("Added to newOrder");
+
+
+            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime) VALUES(?,?,?,?,?,?)");
+            while (rs.next()){
+                String uniqueID2 = UUID.randomUUID().toString();
+                psmt2.setString(1,uniqueID2);
+                psmt2.setString(2,rs.getString("userName"));
+                psmt2.setString(3,rs.getString("productID"));
+                psmt2.setString(4,rs.getString("productQuantity"));
+
+                psmt2.setString(5, fd.format(new Date()));
+                psmt2.setString(6, ft.format(new Date()));
+
+                psmt2.executeUpdate();
+            }
+            System.out.println("Added to order");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void updateCheckout() {
