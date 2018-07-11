@@ -75,7 +75,9 @@ public class CustomersPaneController implements Initializable {
         dbHandler = new DBHandler();
         activeCustomerLists();
         customerLists();
-
+        
+        orderLists();
+        
         a_customer_username.setCellValueFactory(new PropertyValueFactory<>("username"));
 
         customer_username.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -95,6 +97,9 @@ public class CustomersPaneController implements Initializable {
         });
 
         a_customersLists.getSelectionModel().select(0);
+    }
+
+    private void orderLists() {
     }
 
     private void activeCustomerInfo(){

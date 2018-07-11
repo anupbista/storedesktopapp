@@ -211,8 +211,6 @@ public class ActiveCustomerInfoController implements Initializable {
         try {
             connection = dbHandler.getConnection();
 
-
-
             Statement st  = connection.createStatement();
             ResultSet rs = st.executeQuery(sqlOrderProducts);
 
@@ -229,17 +227,17 @@ public class ActiveCustomerInfoController implements Initializable {
 
             System.out.println("Added to newOrder");
 
-
-            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime) VALUES(?,?,?,?,?,?)");
+            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime,orderProductID) VALUES(?,?,?,?,?,?,?)");
             while (rs.next()){
-                String uniqueID2 = UUID.randomUUID().toString();
-                psmt2.setString(1,uniqueID2);
+                String uniqueID3 = UUID.randomUUID().toString();
+                psmt2.setString(1,uniqueID);
                 psmt2.setString(2,rs.getString("userName"));
                 psmt2.setString(3,rs.getString("productID"));
                 psmt2.setString(4,rs.getString("productQuantity"));
 
                 psmt2.setString(5, fd.format(new Date()));
                 psmt2.setString(6, ft.format(new Date()));
+                psmt2.setString(7,uniqueID3);
 
                 psmt2.executeUpdate();
             }
