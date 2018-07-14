@@ -1,5 +1,6 @@
 package dashboard;
 
+import Modals.Order;
 import com.jfoenix.controls.JFXTextField;
 import dbConnection.DBHandler;
 import javafx.collections.FXCollections;
@@ -32,6 +33,7 @@ import java.util.ResourceBundle;
 public class CustomersPaneController implements Initializable {
 
     private Parent activeCustomerInfoPane;
+    private Parent orderCustomerInfoPane;
     @FXML
     private JFXTextField searchCustomer;
 
@@ -61,8 +63,16 @@ public class CustomersPaneController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> customer_email;
+    @FXML
+    private TableView<Order> orderLists;
+
+    @FXML
+    private TableColumn<?, ?> orderID;
+
 
     ObservableList<Customers> observableList = FXCollections.observableArrayList();
+
+    ObservableList<Order> orderObservableList = FXCollections.observableArrayList();
 
     ObservableList<Customers> observableLists = FXCollections.observableArrayList();
 
@@ -87,8 +97,11 @@ public class CustomersPaneController implements Initializable {
         customer_phone.setCellValueFactory(new PropertyValueFactory<>("phonenumber"));
         customer_email.setCellValueFactory(new PropertyValueFactory<>("email"));
 
+        orderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+
         a_customersLists.setItems(observableList);
         allCustomerLists.setItems(observableLists);
+        orderLists.setItems(orderObservableList);
 
         a_customersLists.setOnMouseClicked(event -> {
             try {
@@ -97,9 +110,40 @@ public class CustomersPaneController implements Initializable {
         });
 
         a_customersLists.getSelectionModel().select(0);
+
+
+        orderLists.setOnMouseClicked(event -> {
+            try {
+                orderInfo();
+            }catch (NullPointerException e){}
+        });
+
+        orderLists.getSelectionModel().select(0);
+
     }
 
     private void orderLists() {
+        String sql = "SELECT * FROM newOrder";
+        try {
+            connection = dbHandler.getConnection();
+            st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                orderObservableList.add(new Order(rs.getString("newOrderID")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void activeCustomerInfo(){
@@ -120,6 +164,33 @@ public class CustomersPaneController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void orderInfo() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OrderCustomerInfo.fxml"));
+
+            OrderCustomerInfoController orderCustomerInfoController = loader.getController();
+            orderCustomerInfoController.orderID = orderLists.getSelectionModel().getSelectedItem().getOrderID();
+
+            orderCustomerInfoPane = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(LoginController.mainStage);
+            stage.setTitle("Order Information ["+orderCustomerInfoController.orderID+"]");
+            stage.setScene(new Scene(orderCustomerInfoPane));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void refreshloadOrderLists() {
+        orderObservableList.clear();
+        orderLists();
+        System.out.println("Order Reloaded");
     }
 
     @FXML

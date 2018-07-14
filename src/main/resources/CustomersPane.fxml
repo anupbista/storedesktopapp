@@ -34,13 +34,12 @@
                      <content>
                         <AnchorPane prefWidth="406.0">
                            <children>
-                              <JFXTextField fx:id="searchCustomer1" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchActiveCustomers" promptText="Search Customers" />
-                              <TableView fx:id="a_customersLists1" layoutX="14.0" layoutY="55.0" prefHeight="488.0" prefWidth="659.0" stylesheets="@css/style.css">
+                              <TableView fx:id="orderLists" layoutX="14.0" layoutY="55.0" prefHeight="488.0" prefWidth="659.0" stylesheets="@css/style.css">
                                  <columns>
-                                    <TableColumn fx:id="a_customer_username1" prefWidth="160.0" text="OrderID" />
+                                    <TableColumn fx:id="orderID" prefWidth="160.0" text="OrderID" />
                                  </columns>
                               </TableView>
-                              <JFXButton layoutX="611.0" layoutY="14.0" onAction="#refreshloadActiveCustomers" text="Reload" />
+                              <JFXButton layoutX="611.0" layoutY="14.0" onAction="#refreshloadOrderLists" text="Reload" />
                            </children>
                         </AnchorPane>
                      </content>

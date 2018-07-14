@@ -17,10 +17,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="QR_Attendance" />
+        <module name="store" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="QR_Attendance" target="8" />
+      <module name="store" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

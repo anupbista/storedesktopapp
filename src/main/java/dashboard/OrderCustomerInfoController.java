@@ -1,5 +1,6 @@
 package dashboard;
 
+import Modals.Order;
 import Modals.Products;
 import com.jfoenix.controls.JFXButton;
 import dbConnection.DBHandler;
@@ -31,10 +32,7 @@ public class OrderCustomerInfoController implements Initializable {
 
 
     @FXML
-    private AnchorPane orderCustomerInfo;
-
-    @FXML
-    private TableView<Products> orderProducts;
+    private TableView<Order> orderProducts;
 
     @FXML
     private TableColumn<?, ?> orderProductID;
@@ -47,9 +45,6 @@ public class OrderCustomerInfoController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> orderProductColor;
-
-    @FXML
-    private TableColumn<?, ?> orderProductBrand;
 
     @FXML
     private TableColumn<?, ?> orderProductQuality;
@@ -68,19 +63,25 @@ public class OrderCustomerInfoController implements Initializable {
 
     @FXML
     private Text orderPhone;
+    @FXML
+    private Text orderDate;
 
+    @FXML
+    private Text orderTIme;
+    @FXML
+    private JFXButton deliverbtn;
 
-    public static String selectedusername;
     private Connection connection;
+    public static String orderID;
     private DBHandler dbHandler;
 
     @FXML
     private Text totalprice;
     private int totalPrice;
-    String productID;
+    String username;
 
 
-    ObservableList<Products> observableListOrderProducts = FXCollections.observableArrayList();
+    ObservableList<Order> observableListOrderProducts = FXCollections.observableArrayList();
 
     @FXML
     private Text checkoutBy;
@@ -88,346 +89,166 @@ public class OrderCustomerInfoController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DBHandler();
-//        itemsOnOrder();
-//        calculatePrice();
+        itemsOnOrder();
+        calculatePrice();
 
         orderProductID.setCellValueFactory(new PropertyValueFactory<>("productID"));
-        orderProductName.setCellValueFactory(new PropertyValueFactory<>("productName"));
-        orderProductSize.setCellValueFactory(new PropertyValueFactory<>("productSize"));
-        orderProductColor.setCellValueFactory(new PropertyValueFactory<>("productColor"));
-        orderProductBrand.setCellValueFactory(new PropertyValueFactory<>("productBrand"));
+        orderProductName.setCellValueFactory(new PropertyValueFactory<>("productname"));
+        orderProductSize.setCellValueFactory(new PropertyValueFactory<>("orderSize"));
+        orderProductColor.setCellValueFactory(new PropertyValueFactory<>("orderColor"));
         orderProductQuality.setCellValueFactory(new PropertyValueFactory<>("productquantity"));
-        orderProductPrice.setCellValueFactory(new PropertyValueFactory<>("productPrice"));
+        orderProductPrice.setCellValueFactory(new PropertyValueFactory<>("orderPrice"));
 
 
         orderProducts.setItems(observableListOrderProducts);
-//
-//        setExtraInfo();
-//        checkoutStatus();
+
+        setExtraInfo();
+    }
+
+    private void getUserInfo() {
+        String sql = "SELECT * FROM customers WHERE username='" + username + "'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+               orderName.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+               orderAddress.setText(rs.getString("address"));
+               orderPhone.setText(rs.getString("phone_number"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void setExtraInfo() {
+        checkoutBy.setText(LoginController.user);
     }
 
     @FXML
     public void refreshloadOrderCustomersInfo() {
-//        observableListOrderProducts.clear();
-//        itemsOnCart();
-//        checkoutStatus();
-//        System.out.println("Reloaded");
+        observableListOrderProducts.clear();
+        itemsOnOrder();
+        System.out.println("Reloaded");
     }
 
-//    private void checkoutStatus() {
-//        String sql = "SELECT userCheckout FROM activeCustomers WHERE username='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            while (rs.next()){
-//               int status = rs.getInt("userCheckout");
-//               if (status == 1){
-//                   checkoutbtn.setDisable(false);
-//               }else{
-//                   checkoutbtn.setDisable(true);
-//               }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void setExtraInfo() {
-//        checkoutBy.setText(LoginController.user);
-//    }
-//
-//    private void itemsOnOrder() {
-//        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            int productquantity;
-//            String productPrice;
-//            String hm;
-//            while (rs.next()){
-//
-//                if (rs.getString("homedelivery").equals("1")){
-//                    hm = "Y";
-//                }else{
-//                    hm = "N";
-//                }
-//                System.out.println(hm);
-//                productID = rs.getString("productID");
-//                productquantity  = rs.getInt("productQuantity");
-//                productPrice  = rs.getString("productPrice");
-//                String sql2 = "SELECT * FROM products WHERE productID='"+productID+"'";
-//                Statement st2 = connection.createStatement();
-//                ResultSet rs2 = st2.executeQuery(sql2);
-//                while (rs2.next()){
-//                    observableListCartProducts.add(new Products(rs2.getString("productID"),rs2.getString("productname"),rs2.getString("productsize"),
-//                            rs2.getString("productcolor"),rs2.getString("productbrand"),productPrice,productquantity,hm));
-//                    totalPrice+= Integer.parseInt(productPrice);
-//
-//                }
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void calculatePrice() {
-//        totalprice.setText("Rs. "+String.valueOf(totalPrice));
-//    }
-//
-//    @FXML
-//    void deliver(ActionEvent event) {
-//        addtoOrders();
-//        removeProductFromCart();
-//        checkoutbtn.setDisable(true);
-//        ((Node)(event.getSource())).getScene().getWindow().hide();
-//    }
-//
-//    private void addtoOrders() {
-//        SimpleDateFormat fd = new SimpleDateFormat ("yyyy.MM.dd");
-//        SimpleDateFormat ft = new SimpleDateFormat ("hh:mm:ss a");
-//        String homed = "1";
-//        String sqlOrderProducts = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"' and homedelivery="+homed+"";
-//        try {
-//            connection = dbHandler.getConnection();
-//
-//            Statement st  = connection.createStatement();
-//            ResultSet rs = st.executeQuery(sqlOrderProducts);
-//
-//            PreparedStatement psmt = connection.prepareStatement("INSERT into newOrder(newOrderID,username,newOrderDate,newOrderTime) VALUES(?,?,?,?)");
-//
-//            String uniqueID = UUID.randomUUID().toString();
-//            psmt.setString(1,uniqueID);
-//            psmt.setString(2,selectedusername);
-//
-//            psmt.setString(3, fd.format(new Date()));
-//            psmt.setString(4, ft.format(new Date()));
-//
-//            psmt.executeUpdate();
-//
-//            System.out.println("Added to newOrder");
-//
-//            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime,orderProductID) VALUES(?,?,?,?,?,?,?)");
-//            while (rs.next()){
-//                String uniqueID3 = UUID.randomUUID().toString();
-//                psmt2.setString(1,uniqueID);
-//                psmt2.setString(2,rs.getString("userName"));
-//                psmt2.setString(3,rs.getString("productID"));
-//                psmt2.setString(4,rs.getString("productQuantity"));
-//
-//                psmt2.setString(5, fd.format(new Date()));
-//                psmt2.setString(6, ft.format(new Date()));
-//                psmt2.setString(7,uniqueID3);
-//
-//                psmt2.executeUpdate();
-//            }
-//            System.out.println("Added to order");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void updateCheckout() {
-//        String sql = "UPDATE activeCustomers SET staffCheckout=?, userCheckout=? WHERE username=?";
-//        try {
-//            connection = dbHandler.getConnection();
-//            PreparedStatement st  = connection.prepareStatement(sql);
-//            st.setInt(1,0);
-//            st.setInt(2,0);
-//            st.setString(3,selectedusername);
-//            st.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void updateStaffCheckout() {
-//        String sql = "UPDATE activeCustomers SET staffCheckout=? WHERE username=?";
-//        try {
-//            connection = dbHandler.getConnection();
-//            PreparedStatement st  = connection.prepareStatement(sql);
-//            st.setInt(1,1);
-//            st.setString(2,selectedusername);
-//            st.executeUpdate();
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    public void addToSales(){
-//        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            PreparedStatement psmt = connection.prepareStatement("INSERT into sales(saleID,username,productID,date,totalprice,productQuantity,checkoutBy,time) VALUES(?,?,?,?,?,?,?,?)");
-//            while (rs.next()){
-//                psmt.setString(1,rs.getString("userName")+rs.getString("productID")+(LocalDateTime.now().toString()));
-//                psmt.setString(2,rs.getString("userName"));
-//                psmt.setString(3,rs.getString("productID"));
-//                psmt.setString(4, (new LocalDate().toString()));
-//                psmt.setString(5,Integer.toString(Integer.parseInt(rs.getString("productQuantity"))*Integer.parseInt(rs.getString("productPrice"))));
-//                psmt.setString(6,rs.getString("productQuantity"));
-//                psmt.setString(7,LoginController.user);
-//                psmt.setString(8,(new LocalTime().toString()));
-//
-//                psmt.executeUpdate();
-//            }
-//            System.out.println("Added to sales");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void removeProductFromCart() {
-//        clearBill();
-//        addToBill();
-//        addToSales();
-//        String sql = "DELETE FROM productOnCart WHERE userName='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            int rows = st.executeUpdate(sql);
-//            if (rows < 1){
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                alert.setTitle("Information Dialog");
-//                alert.setHeaderText(null);
-//                alert.setContentText("Payment Failed!!! Retry");
-//                alert.showAndWait();
-//            }
-//            else {
-//                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-//                alert.setTitle("Information Dialog");
-//                alert.setHeaderText(null);
-//                alert.setContentText("Payment Successful!!!");
-//                alert.showAndWait();
-//                updateStaffCheckout();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//
-//    private void clearBill() {
-//        String sql = "DELETE FROM checkoutBill WHERE userName='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            int rows = st.executeUpdate(sql);
-//            if (rows < 1){
-//                System.out.println("Bill Not Cleared");
-//            }
-//            else {
-//                System.out.println("Bill Cleared");
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//
-//    private void addToBill() {
-//        String sql = "SELECT * FROM productOnCart WHERE userName='"+selectedusername+"'";
-//        try {
-//            connection = dbHandler.getConnection();
-//            Statement st  = connection.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            PreparedStatement psmt = connection.prepareStatement("INSERT into checkoutBill(userName,productID,productName,productQuantity,productPrice,checkoutBy) VALUES(?,?,?,?,?,?)");
-//            while (rs.next()){
-//                psmt.setString(1,rs.getString("userName"));
-//                psmt.setString(2,rs.getString("productID"));
-//                psmt.setString(3,rs.getString("productName"));
-//                psmt.setInt(4,Integer.parseInt(rs.getString("productQuantity")));
-//                psmt.setString(5,rs.getString("productPrice"));
-//                psmt.setString(6,LoginController.user);
-//
-//                psmt.executeUpdate();
-//            }
-//            System.out.println("Added to BIll");
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        finally {
-//            try {
-//                if (connection!=null){
-//                    connection.close();
-//                }
-//            } catch (SQLException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    private void itemsOnOrder() {
+        String sql = "SELECT * FROM orders WHERE orderID='" + orderID + "'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            String productPrice;
+            while (rs.next()) {
+                username = rs.getString("username");
+                orderUsername.setText(rs.getString("username"));
+                orderDate.setText(String.valueOf(rs.getDate("orderDate")));
+                orderTIme.setText(rs.getString("orderTime"));
+                String sql2 = "SELECT * FROM products WHERE productID='" + rs.getString("productID") + "'";
+                Statement st2 = connection.createStatement();
+                ResultSet rs2 = st2.executeQuery(sql2);
+                while (rs2.next()) {
+                    productPrice = rs2.getString("productprice");
+                    observableListOrderProducts.add(new Order(rs.getString("orderID"), rs2.getString("productname"), rs2.getString("productsize"), rs2.getString("productcolor"), rs2.getString("productquantity"), rs2.getString("productprice")));
+                    totalPrice += Integer.parseInt(productPrice);
+                }
+            }
+            getUserInfo();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void calculatePrice() {
+        totalprice.setText("Rs. " + String.valueOf(totalPrice));
+    }
+
+    @FXML
+    void deliver(ActionEvent event) {
+        removeProductFromnewOrder();
+        removeProductFromOrders();
+        deliverbtn.setDisable(true);
+        System.out.println("Delivery Processing");
+        ((Node) (event.getSource())).getScene().getWindow().hide();
+    }
+
+    private void removeProductFromOrders() {
+        String sql = "DELETE FROM orders WHERE orderID='"+orderID+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Delivery Processing Failed!!! Retry");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Delivery Processing!!!");
+                alert.showAndWait();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void removeProductFromnewOrder() {
+        String sql = "DELETE FROM newOrder WHERE newOrderID='"+orderID+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                System.out.println("Failed deleting from new order table");
+            }
+            else {
+                System.out.println("Successfully delete from new order table");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+
+
 }

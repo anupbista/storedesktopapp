@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 public class ReportsController implements Initializable{
 
     @FXML
-    private LineChart<?, ?> salesLineChart;
+    private LineChart<String, Integer> salesLineChart;
 
     @FXML
     private CategoryAxis salesLineChartX;
@@ -28,32 +28,26 @@ public class ReportsController implements Initializable{
     private NumberAxis salesLineChartY;
     private Connection connection;
     private DBHandler dbHandler;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         dbHandler = new DBHandler();
-
         getSalesData();
-
-        XYChart.Series salesSeries = new XYChart.Series();
-        for (int i = 0; i < 10; i++) {
-            salesSeries.getData().add(new XYChart.Data(""+i+"",i+1));
-        }
-
-        salesLineChart.getData().addAll(salesSeries);
-
     }
 
     private void getSalesData() {
-        String sql = "select convert(char(3), sales.date, 0)";
+        XYChart.Series<String, Integer> salesSeries = new XYChart.Series<>();
+//        String sql = "select * from sales order by date desc limit 10";
+        String sql = "SELECT date, sum(productQuantity) FROM sales group by date";
         try {
             connection = dbHandler.getConnection();
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
-                    System.out.println(rs.getString("date"));
+                    System.out.println(rs.getString(1)+"    "+rs.getString(2));
+                    salesSeries.getData().add(new XYChart.Data<>(rs.getString(1),rs.getInt(2)));
                 }
+                salesLineChart.getData().addAll(salesSeries);
             }
             else {
 //                if empty
