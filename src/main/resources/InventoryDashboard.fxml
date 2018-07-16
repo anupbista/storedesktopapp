@@ -61,7 +61,7 @@
                      </cursor>
                   </JFXButton>
                   <FontAwesomeIconView fill="WHITE" layoutX="16.0" layoutY="112.0" size="14" text="" />
-                  <Circle fill="#4caf50" layoutX="183.0" layoutY="108.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Circle fill="#14aa9e" layoutX="183.0" layoutY="108.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
                   <Text fx:id="notiCount" fill="WHITE" layoutX="179.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
                </children>
             </Pane>
