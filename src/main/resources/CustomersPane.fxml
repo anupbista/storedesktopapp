@@ -15,11 +15,11 @@
             <children>
                 <JFXTabPane prefHeight="600.0" prefWidth="688.0" stylesheets="@css/style.css">
                     <tabs>
-                        <Tab style="-fx-background-color: #535c60;" text="Active Customers">
+                        <Tab style="-fx-background-color: #14aa9e;" text="Active Customers">
                             <content>
                                 <AnchorPane prefWidth="406.0">
                            <children>
-                              <JFXTextField fx:id="searchCustomer" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchActiveCustomers" promptText="Search Customers" />
+                              <JFXTextField fx:id="searchCustomer" focusColor="#2bc1b5" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchActiveCustomers" promptText="Search Customers" />
                               <TableView fx:id="a_customersLists" layoutX="14.0" layoutY="55.0" prefHeight="488.0" prefWidth="659.0" stylesheets="@css/style.css">
                                  <columns>
                                     <TableColumn fx:id="a_customer_username" prefWidth="160.0" text="username" />
@@ -30,21 +30,47 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                  <Tab style="-fx-background-color: #535c60;" text="Orders">
+                  <Tab style="-fx-background-color: #14aa9e;" text="Orders">
                      <content>
                         <AnchorPane prefWidth="406.0">
                            <children>
-                              <TableView fx:id="orderLists" layoutX="14.0" layoutY="55.0" prefHeight="488.0" prefWidth="659.0" stylesheets="@css/style.css">
-                                 <columns>
-                                    <TableColumn fx:id="orderID" prefWidth="160.0" text="OrderID" />
-                                 </columns>
-                              </TableView>
-                              <JFXButton layoutX="611.0" layoutY="14.0" onAction="#refreshloadOrderLists" text="Reload" />
+                              <JFXTabPane>
+                                 <tabs>
+                                    <Tab text="Pending">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="507.0" prefWidth="690.0">
+                                             <children>
+                                                <TableView fx:id="orderLists" layoutX="6.0" layoutY="42.0" prefHeight="463.0" prefWidth="678.0" stylesheets="@css/style.css">
+                                                   <columns>
+                                                      <TableColumn fx:id="orderID" prefWidth="160.0" text="OrderID" />
+                                                   </columns>
+                                                </TableView>
+                                                <JFXButton buttonType="RAISED" layoutX="612.0" layoutY="8.0" onAction="#refreshloadOrderLists" style="-fx-background-color: #14aa9e;" text="Reload" textFill="WHITE" />
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                    <Tab text="Processing">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="507.0" prefWidth="690.0">
+                                             <children>
+                                                <TableView fx:id="processingOrderLists" layoutX="6.0" layoutY="42.0" prefHeight="463.0" prefWidth="678.0" stylesheets="@css/style.css">
+                                                   <columns>
+                                                      <TableColumn fx:id="processingOrderID" prefWidth="160.0" text="OrderID" />
+                                                   </columns>
+                                                </TableView>
+                                                <JFXButton buttonType="RAISED" layoutX="612.0" layoutY="8.0" onAction="#refreshloadProcessingOrderLists" style="-fx-background-color: #14aa9e;" text="Reload" textFill="WHITE" />
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </Tab>
+                                 </tabs>
+                              </JFXTabPane>
                            </children>
                         </AnchorPane>
                      </content>
                   </Tab>
-                        <Tab style="-fx-background-color: #535c60;" text="All Customers">
+                        <Tab style="-fx-background-color: #14aa9e;" text="All Customers">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>

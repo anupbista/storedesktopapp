@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.UUID;
 
-public class OrderCustomerInfoController implements Initializable {
+public class OrderProcessingInfoController implements Initializable {
 
 
     @FXML
@@ -69,7 +69,7 @@ public class OrderCustomerInfoController implements Initializable {
     @FXML
     private Text orderTIme;
     @FXML
-    private JFXButton deliverbtn;
+    private JFXButton completedbtn;
 
     private Connection connection;
     public static String orderID;
@@ -112,9 +112,9 @@ public class OrderCustomerInfoController implements Initializable {
             Statement st = connection.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
-               orderName.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
-               orderAddress.setText(rs.getString("address"));
-               orderPhone.setText(rs.getString("phone_number"));
+                orderName.setText(rs.getString("first_name")+" "+rs.getString("last_name"));
+                orderAddress.setText(rs.getString("address"));
+                orderPhone.setText(rs.getString("phone_number"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,12 +133,6 @@ public class OrderCustomerInfoController implements Initializable {
         checkoutBy.setText(LoginController.user);
     }
 
-    @FXML
-    public void refreshloadOrderCustomersInfo() {
-        observableListOrderProducts.clear();
-        itemsOnOrder();
-        System.out.println("Reloaded");
-    }
 
     private void itemsOnOrder() {
         String sql = "SELECT * FROM orders WHERE orderID='" + orderID + "'";
@@ -180,20 +174,23 @@ public class OrderCustomerInfoController implements Initializable {
     }
 
     @FXML
-    void deliver(ActionEvent event) {
+    void completed(ActionEvent event) {
         String sql = "UPDATE newOrder SET status=? WHERE newOrderID=?";
         String sql2 = "UPDATE orders SET status=? WHERE orderID=?";
         try {
             connection = dbHandler.getConnection();
             PreparedStatement st  = connection.prepareStatement(sql);
             PreparedStatement st2  = connection.prepareStatement(sql2);
-            st.setString(1,"processing");
+            st.setString(1,"completed");
             st.setString(2, orderID);
             st.executeUpdate();
 
-            st2.setString(1,"processing");
+            st2.setString(1,"completed");
             st2.setString(2, orderID);
             st2.executeUpdate();
+
+            removeProductFromnewOrder();
+            removeProductFromOrders();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -207,9 +204,69 @@ public class OrderCustomerInfoController implements Initializable {
                 e.printStackTrace();
             }
         }
-        deliverbtn.setDisable(true);
-        System.out.println("Delivery Processing");
+        completedbtn.setDisable(true);
+        System.out.println("Delivery Completed");
         ((Node) (event.getSource())).getScene().getWindow().hide();
+    }
+
+    private void removeProductFromOrders() {
+        String sql = "DELETE FROM orders WHERE orderID='"+orderID+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Delivery Completion Failed!!! Retry");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Information Dialog");
+                alert.setHeaderText(null);
+                alert.setContentText("Delivery Completed!!!");
+                alert.showAndWait();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void removeProductFromnewOrder() {
+        String sql = "DELETE FROM newOrder WHERE newOrderID='"+orderID+"'";
+        try {
+            connection = dbHandler.getConnection();
+            Statement st  = connection.createStatement();
+            int rows = st.executeUpdate(sql);
+            if (rows < 1){
+                System.out.println("Failed deleting from new order table");
+            }
+            else {
+                System.out.println("Successfully delete from new order table");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
 }

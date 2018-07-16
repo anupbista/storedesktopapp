@@ -37,7 +37,7 @@ public class ReportsController implements Initializable{
     private void getSalesData() {
         XYChart.Series<String, Integer> salesSeries = new XYChart.Series<>();
 //        String sql = "select * from sales order by date desc limit 10";
-        String sql = "SELECT date, sum(productQuantity) FROM sales group by date";
+        String sql = "SELECT date, sum(productQuantity) FROM sales group by date desc limit 10";
         try {
             connection = dbHandler.getConnection();
             Statement st = connection.createStatement();

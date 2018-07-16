@@ -37,7 +37,7 @@
       </ScrollPane>
       <Pane fx:id="emptyMessage" prefHeight="200.0" prefWidth="200.0" visible="false">
          <children>
-            <Circle fill="#4caf50" layoutX="344.0" layoutY="300.0" radius="100.0" stroke="#4caf50" strokeType="INSIDE" />
+            <Circle fill="#14aa9e" layoutX="344.0" layoutY="300.0" radius="100.0" stroke="#14aa9e" strokeType="INSIDE" />
             <Text fill="WHITE" layoutX="285.0" layoutY="308.0" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="All on Stock">
                <font>
                   <Font size="20.0" />

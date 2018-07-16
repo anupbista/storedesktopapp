@@ -28,12 +28,12 @@
          </content></ScrollPane>
       <Pane layoutY="301.0" prefHeight="191.0" prefWidth="600.0" style="-fx-background-color: #e2e2e2;">
          <children>
-            <JFXButton fx:id="deliverbtn" buttonType="RAISED" layoutX="520.0" layoutY="149.0" onAction="#deliver" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Deliver" />
+            <JFXButton fx:id="deliverbtn" buttonType="RAISED" layoutX="503.0" layoutY="150.0" onAction="#deliver" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="Deliver" textFill="WHITE" />
             <Text layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Total:" />
             <Text fx:id="totalprice" layoutX="68.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="83.28027725219727" />
             <Text layoutX="13.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By: " />
             <Text fx:id="checkoutBy" layoutX="49.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-            <JFXButton buttonType="RAISED" layoutX="440.0" layoutY="150.0" onAction="#refreshloadOrderCustomersInfo" prefHeight="30.0" prefWidth="67.0" style="-fx-background-color: grey;" text="Reload" textFill="WHITE" />
+            <JFXButton buttonType="RAISED" layoutX="408.0" layoutY="150.0" onAction="#refreshloadOrderCustomersInfo" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="Reload" textFill="WHITE" />
             <Text layoutX="11.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
             <Text layoutX="11.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" />
             <Text layoutX="11.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />

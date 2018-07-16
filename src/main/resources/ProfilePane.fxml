@@ -15,7 +15,7 @@
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d9dfe4" height="385.0" layoutX="140.0" layoutY="177.0" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" width="397.0" />
             <Text fx:id="userName" layoutX="344.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User" wrappingWidth="172.669921875" AnchorPane.leftAnchor="344.0" />
-            <Rectangle fill="#89c68b" height="137.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="688.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Rectangle fill="#14aa9e" height="137.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" width="688.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <ImageView fx:id="userImage" fitHeight="81.0" fitWidth="123.0" layoutX="298.0" layoutY="81.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/user.png" />

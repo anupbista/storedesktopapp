@@ -34,6 +34,7 @@ public class CustomersPaneController implements Initializable {
 
     private Parent activeCustomerInfoPane;
     private Parent orderCustomerInfoPane;
+    private Parent orderProcessingInfoPane;
     @FXML
     private JFXTextField searchCustomer;
 
@@ -68,11 +69,17 @@ public class CustomersPaneController implements Initializable {
 
     @FXML
     private TableColumn<?, ?> orderID;
+    @FXML
+    private TableView<Order> processingOrderLists;
+
+    @FXML
+    private TableColumn<?, ?> processingOrderID;
 
 
     ObservableList<Customers> observableList = FXCollections.observableArrayList();
 
     ObservableList<Order> orderObservableList = FXCollections.observableArrayList();
+    ObservableList<Order> processingOrderObservableList = FXCollections.observableArrayList();
 
     ObservableList<Customers> observableLists = FXCollections.observableArrayList();
 
@@ -87,7 +94,8 @@ public class CustomersPaneController implements Initializable {
         customerLists();
         
         orderLists();
-        
+        processingOrderLists();
+
         a_customer_username.setCellValueFactory(new PropertyValueFactory<>("username"));
 
         customer_username.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -99,9 +107,13 @@ public class CustomersPaneController implements Initializable {
 
         orderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
 
+        processingOrderID.setCellValueFactory(new PropertyValueFactory<>("orderID"));
+
+
         a_customersLists.setItems(observableList);
         allCustomerLists.setItems(observableLists);
         orderLists.setItems(orderObservableList);
+        processingOrderLists.setItems(processingOrderObservableList);
 
         a_customersLists.setOnMouseClicked(event -> {
             try {
@@ -120,10 +132,65 @@ public class CustomersPaneController implements Initializable {
 
         orderLists.getSelectionModel().select(0);
 
+        processingOrderLists.setOnMouseClicked(event -> {
+            try {
+                orderProcessingInfo();
+            }catch (NullPointerException e){}
+        });
+
+        processingOrderLists.getSelectionModel().select(0);
+
     }
 
+    private void orderProcessingInfo() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/OrderProcessingInfo.fxml"));
+
+            OrderProcessingInfoController orderProcessingInfoController = loader.getController();
+            orderProcessingInfoController.orderID = processingOrderLists.getSelectionModel().getSelectedItem().getOrderID();
+
+            orderProcessingInfoPane = loader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(LoginController.mainStage);
+            stage.setTitle("Order Information ["+orderProcessingInfoController.orderID+"]");
+            stage.setScene(new Scene(orderProcessingInfoPane));
+            stage.setResizable(false);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void processingOrderLists() {
+        String status="processing";
+        String sql = "SELECT * FROM newOrder where status='"+status+"'";
+        try {
+            connection = dbHandler.getConnection();
+            st  = connection.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                processingOrderObservableList.add(new Order(rs.getString("newOrderID")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally {
+            try {
+                if (connection!=null){
+                    connection.close();
+                    st.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     private void orderLists() {
-        String sql = "SELECT * FROM newOrder";
+        String status="pending";
+        String sql = "SELECT * FROM newOrder where status='"+status+"'";
         try {
             connection = dbHandler.getConnection();
             st  = connection.createStatement();
@@ -184,6 +251,13 @@ public class CustomersPaneController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    void refreshloadProcessingOrderLists() {
+        processingOrderObservableList.clear();
+        processingOrderLists();
+        System.out.println("Order Reloaded");
     }
 
     @FXML

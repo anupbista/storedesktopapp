@@ -214,7 +214,7 @@ public class ActiveCustomerInfoController implements Initializable {
             Statement st  = connection.createStatement();
             ResultSet rs = st.executeQuery(sqlOrderProducts);
 
-            PreparedStatement psmt = connection.prepareStatement("INSERT into newOrder(newOrderID,username,newOrderDate,newOrderTime) VALUES(?,?,?,?)");
+            PreparedStatement psmt = connection.prepareStatement("INSERT into newOrder(newOrderID,username,newOrderDate,newOrderTime,status) VALUES(?,?,?,?,?)");
 
             String uniqueID = UUID.randomUUID().toString();
             psmt.setString(1,uniqueID);
@@ -222,12 +222,13 @@ public class ActiveCustomerInfoController implements Initializable {
 
             psmt.setString(3, fd.format(new Date()));
             psmt.setString(4, ft.format(new Date()));
+            psmt.setString(5, "pending");
 
             psmt.executeUpdate();
 
             System.out.println("Added to newOrder");
 
-            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime,orderProductID) VALUES(?,?,?,?,?,?,?)");
+            PreparedStatement psmt2 = connection.prepareStatement("INSERT into orders(orderID,username,productID,productQuantity,orderDate,orderTime,orderProductID,status) VALUES(?,?,?,?,?,?,?,?)");
             while (rs.next()){
                 String uniqueID3 = UUID.randomUUID().toString();
                 psmt2.setString(1,uniqueID);
@@ -238,7 +239,7 @@ public class ActiveCustomerInfoController implements Initializable {
                 psmt2.setString(5, fd.format(new Date()));
                 psmt2.setString(6, ft.format(new Date()));
                 psmt2.setString(7,uniqueID3);
-
+                psmt2.setString(8, "pending");
                 psmt2.executeUpdate();
             }
             System.out.println("Added to order");

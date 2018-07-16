@@ -25,7 +25,7 @@
       <AnchorPane prefHeight="400.0" prefWidth="600.0" />
       <JFXTabPane stylesheets="@css/style.css">
          <tabs>
-            <Tab style="-fx-background-color: #535c60;" text="All">
+            <Tab style="-fx-background-color: #14aa9e;" text="All">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -49,13 +49,13 @@
                               </TableView>
                            </content>
                         </ScrollPane>
-                        <JFXTextField fx:id="searchProducts" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchAllProducts" promptText="Search Products" />
-                        <JFXButton layoutX="608.0" layoutY="16.0" onAction="#refreshloadAllProducts" text="Reload" />
+                        <JFXTextField fx:id="searchProducts" focusColor="#14aa9e" layoutX="14.0" layoutY="14.0" onKeyTyped="#searchAllProducts" promptText="Search Products" />
+                        <JFXButton buttonType="RAISED" layoutX="608.0" layoutY="16.0" onAction="#refreshloadAllProducts" style="-fx-background-color: #14aa9e;" text="Reload" textFill="WHITE" />
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
-            <Tab style="-fx-background-color: #535c60;" text="Add">
+            <Tab style="-fx-background-color: #14aa9e;" text="Add">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -78,7 +78,7 @@
                               <JFXTextField fx:id="addproductbrand" layoutX="151.0" layoutY="242.0" />
                               <JFXTextField fx:id="addproductprice" layoutX="151.0" layoutY="276.0" />
                               <JFXTextField fx:id="addproductquantity" layoutX="151.0" layoutY="308.0" />
-                              <JFXButton fx:id="addProductBtn" buttonType="RAISED" layoutX="204.0" layoutY="420.0" onAction="#addProduct" prefHeight="30.0" style="-fx-background-color: #4CAF50;" text="Add Product" />
+                              <JFXButton fx:id="addProductBtn" buttonType="RAISED" layoutX="204.0" layoutY="411.0" onAction="#addProduct" prefHeight="40.0" prefWidth="105.0" style="-fx-background-color: #14aa9e;" text="Add Product" textFill="WHITE" />
                               <Label fx:id="error_addProduct" layoutX="3.0" layoutY="395.0" textFill="#e74c3c" visible="false">
                                  <font>
                                     <Font size="12.0" />
@@ -100,7 +100,7 @@
                      </cursor></AnchorPane>
               </content>
             </Tab>
-            <Tab style="-fx-background-color: #535c60;" text="Update">
+            <Tab style="-fx-background-color: #14aa9e;" text="Update">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -130,11 +130,11 @@
                               </Label>
                            </children>
                         </Pane>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="95.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
-                        <Text layoutX="166.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
-                         <JFXTextField fx:id="updateproductID" layoutX="315.0" layoutY="50.0" onKeyTyped="#toggleUpdatepane" />
-                         <JFXButton fx:id="updateOKbtn" buttonType="RAISED" layoutX="368.0" layoutY="86.0" onAction="#showUpdatePane" style="-fx-background-color: #4CAF50;" text="OK" />
-                        <Text layoutX="231.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to update" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="160.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="170.0" layoutY="103.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                         <JFXTextField fx:id="updateproductID" focusColor="#14aa9e" layoutX="319.0" layoutY="80.0" onKeyTyped="#toggleUpdatepane" />
+                         <JFXButton fx:id="updateOKbtn" buttonType="RAISED" layoutX="387.0" layoutY="126.0" onAction="#showUpdatePane" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="OK" textFill="WHITE" />
+                        <Text layoutX="232.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to update" />
                      </children>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
@@ -142,15 +142,15 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-background-color: #535c60;" text="Delete">
+            <Tab style="-fx-background-color: #14aa9e;" text="Delete">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="112.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
-                        <Text layoutX="166.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
-                        <JFXTextField fx:id="deleteProductID" layoutX="315.0" layoutY="50.0" onKeyTyped="#toggleUpdatepane" />
-                        <JFXButton fx:id="deleteproductbtn" buttonType="RAISED" layoutX="396.0" layoutY="92.0" onAction="#deleteproduct" style="-fx-background-color: #4CAF50;" text="DELETE" />
-                        <Text layoutX="231.0" layoutY="39.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to delete" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="159.0" layoutX="105.0" layoutY="20.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="172.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                        <JFXTextField fx:id="deleteProductID" layoutX="321.0" layoutY="87.0" onKeyTyped="#toggleUpdatepane" />
+                        <JFXButton fx:id="deleteproductbtn" buttonType="RAISED" layoutX="393.0" layoutY="132.0" onAction="#deleteproduct" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="DELETE" textFill="WHITE" />
+                        <Text layoutX="236.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to delete" />
                      </children>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />
@@ -158,7 +158,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-background-color: #535c60;" text="Sale Products">
+            <Tab style="-fx-background-color: #14aa9e;" text="Sale Products">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <cursor>
@@ -179,27 +179,27 @@
                            </content>
                         </ScrollPane>
                         <JFXTextField fx:id="searchSaleProducts" layoutX="16.0" layoutY="22.0" onKeyTyped="#searchAllSaleProducts" promptText="Seach Sale Products" />
-                        <JFXButton layoutX="615.0" layoutY="22.0" onAction="#saleProductReload" text="Reload" />
+                        <JFXButton buttonType="RAISED" layoutX="615.0" layoutY="22.0" onAction="#saleProductReload" style="-fx-background-color: #14aa9e;" text="Reload" textFill="WHITE" />
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab style="-fx-background-color: #535c60;" text="Sale">
+            <Tab style="-fx-background-color: #14aa9e;" text="Sale">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="165.0" layoutX="119.0" layoutY="70.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
-                        <Text layoutX="211.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
-                        <JFXTextField fx:id="addSaleProductID" layoutX="329.0" layoutY="116.0" onKeyTyped="#toggleUpdatepane" />
-                        <JFXButton fx:id="addSaleProductBtn" buttonType="RAISED" layoutX="437.0" layoutY="190.0" onAction="#addSaleProduct" style="-fx-background-color: #4CAF50;" text="ADD" />
-                        <Text layoutX="245.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to add to sales" />
-                        <JFXTextField fx:id="salePrice" layoutX="329.0" layoutY="152.0" onKeyTyped="#toggleUpdatepane" />
-                        <Text layoutX="212.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sale Price *" />
-                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="155.0" layoutX="119.0" layoutY="293.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
-                        <Text layoutX="211.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
-                        <JFXTextField fx:id="deleteSaleProductID" layoutX="329.0" layoutY="344.0" onKeyTyped="#toggleUpdatepane" />
-                        <JFXButton fx:id="deleteSaleProductBtn" buttonType="RAISED" layoutX="419.0" layoutY="397.0" onAction="#deleteSaleProduct" style="-fx-background-color: #4CAF50;" text="DELETE" />
-                        <Text layoutX="245.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID delete from sales" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="211.0" layoutX="119.0" layoutY="47.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="199.0" layoutY="141.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                        <JFXTextField fx:id="addSaleProductID" layoutX="360.0" layoutY="123.0" onKeyTyped="#toggleUpdatepane" />
+                        <JFXButton fx:id="addSaleProductBtn" buttonType="RAISED" layoutX="427.0" layoutY="202.0" onAction="#addSaleProduct" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="ADD" textFill="WHITE" />
+                        <Text layoutX="230.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID to add to sales" />
+                        <JFXTextField fx:id="salePrice" layoutX="355.0" layoutY="153.0" onKeyTyped="#toggleUpdatepane" />
+                        <Text layoutX="201.0" layoutY="183.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sale Price *" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#e8e8e8" height="194.0" layoutX="119.0" layoutY="293.0" stroke="WHITE" strokeType="INSIDE" width="422.0" />
+                        <Text layoutX="230.0" layoutY="399.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Product ID *" />
+                        <JFXTextField fx:id="deleteSaleProductID" layoutX="348.0" layoutY="376.0" onKeyTyped="#toggleUpdatepane" />
+                        <JFXButton fx:id="deleteSaleProductBtn" buttonType="RAISED" layoutX="420.0" layoutY="434.0" onAction="#deleteSaleProduct" prefHeight="33.0" prefWidth="83.0" style="-fx-background-color: #14aa9e;" text="DELETE" textFill="WHITE" />
+                        <Text layoutX="245.0" layoutY="340.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Product ID delete from sales" />
                      </children>
                      <cursor>
                         <Cursor fx:constant="OPEN_HAND" />

@@ -159,7 +159,7 @@ public class SignUpController implements Initializable {
             LoginController.resetValidationErrorMessage(error_signup_password_message);
             validationError=false;
         }
-        if(validateEmpty() && validateEmail() && validateUsername() && validatePassword()){
+        if(validateEmpty() && validateEmail() && validateUsername() && validatePassword() && validateRePassword()){
 
             if(selectedFile != null){
                 try {
@@ -265,6 +265,12 @@ public class SignUpController implements Initializable {
             });
 
         }
+    }
+
+    private boolean validateRePassword() {
+        if(password.getText().equals(re_password.getText())){
+            return true;
+        }return false;
     }
 
     private Boolean validateEmpty(){

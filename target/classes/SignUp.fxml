@@ -24,25 +24,26 @@
       <AnchorPane prefHeight="603.0" prefWidth="619.0" />
       <Pane fx:id="signUpPane" prefHeight="614.0" prefWidth="662.0" style="-fx-background-color: #fff;">
          <children>
-            <ImageView fitHeight="629.0" fitWidth="341.0" layoutY="-4.0" pickOnBounds="true">
+            <Pane layoutX="-6.0" prefHeight="622.0" prefWidth="350.0" style="-fx-background-color: #2bc1b5;" />
+            <ImageView fitHeight="629.0" fitWidth="341.0" layoutY="-4.0" pickOnBounds="true" visible="false">
                <image>
-                  <Image url="@img/signup-back.jpg" />
+                  <Image url="@img/loginback.jpg" />
                </image>
             </ImageView>
-            <Text fill="#494848" layoutX="103.0" layoutY="86.0" strokeType="OUTSIDE" style="-fx-font-size: 28px; -fx-font-weight: 700;" text="SignUP" textAlignment="CENTER" wrappingWidth="137.10351634025574" />
-            <JFXTextField fx:id="first_name" focusColor="#4caf50" layoutX="380.0" layoutY="57.0" prefHeight="40.0" prefWidth="127.0" promptText="First Name" stylesheets="@css/common.css">
+            <Text fill="WHITE" layoutX="103.0" layoutY="86.0" strokeType="OUTSIDE" style="-fx-font-size: 28px; -fx-font-weight: 700;" text="SignUP" textAlignment="CENTER" wrappingWidth="137.10351634025574" />
+            <JFXTextField fx:id="first_name" focusColor="#14aa9e" layoutX="380.0" layoutY="57.0" prefHeight="40.0" prefWidth="127.0" promptText="First Name" stylesheets="@css/common.css">
                <font>
                   <Font size="12.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="last_name" focusColor="#4caf50" layoutX="514.0" layoutY="57.0" prefHeight="40.0" prefWidth="127.0" promptText="Last Name" stylesheets="@css/common.css" />
-            <JFXTextField fx:id="email" focusColor="#4caf50" layoutX="380.0" layoutY="108.0" prefHeight="40.0" prefWidth="261.0" promptText="Email" stylesheets="@css/common.css" />
-            <JFXTextField fx:id="phone_number" focusColor="#4caf50" layoutX="380.0" layoutY="159.0" prefHeight="40.0" prefWidth="127.0" promptText="Phone Number" stylesheets="@css/common.css" />
-            <JFXDatePicker fx:id="dob" defaultColor="#4caf50" layoutX="523.0" layoutY="173.0" maxWidth="127.0" promptText="DOB" />
-            <JFXTextField fx:id="address" focusColor="#4caf50" layoutX="380.0" layoutY="210.0" prefHeight="40.0" prefWidth="261.0" promptText="Address" stylesheets="@css/common.css" />
-            <JFXTextField fx:id="username" focusColor="#4caf50" layoutX="380.0" layoutY="261.0" prefHeight="40.0" prefWidth="261.0" promptText="Username" stylesheets="@css/common.css" />
-            <JFXPasswordField fx:id="password" focusColor="#4caf50" layoutX="380.0" layoutY="312.0" prefHeight="40.0" prefWidth="127.0" promptText="Password" stylesheets="@css/common.css" />
-            <JFXPasswordField fx:id="re_password" focusColor="#4caf50" layoutX="514.0" layoutY="312.0" prefHeight="40.0" prefWidth="127.0" promptText="Re-Password" stylesheets="@css/common.css" />
+            <JFXTextField fx:id="last_name" focusColor="#14aa9e" layoutX="514.0" layoutY="57.0" prefHeight="40.0" prefWidth="127.0" promptText="Last Name" stylesheets="@css/common.css" />
+            <JFXTextField fx:id="email" focusColor="#14aa9e" layoutX="380.0" layoutY="108.0" prefHeight="40.0" prefWidth="261.0" promptText="Email" stylesheets="@css/common.css" />
+            <JFXTextField fx:id="phone_number" focusColor="#14aa9e" layoutX="380.0" layoutY="159.0" prefHeight="40.0" prefWidth="127.0" promptText="Phone Number" stylesheets="@css/common.css" />
+            <JFXDatePicker fx:id="dob" defaultColor="#14aa9e" layoutX="523.0" layoutY="173.0" maxWidth="127.0" promptText="DOB" />
+            <JFXTextField fx:id="address" focusColor="#14aa9e" layoutX="380.0" layoutY="210.0" prefHeight="40.0" prefWidth="261.0" promptText="Address" stylesheets="@css/common.css" />
+            <JFXTextField fx:id="username" focusColor="#14aa9e" layoutX="380.0" layoutY="261.0" prefHeight="40.0" prefWidth="261.0" promptText="Username" stylesheets="@css/common.css" />
+            <JFXPasswordField fx:id="password" focusColor="#14aa9e" layoutX="380.0" layoutY="312.0" prefHeight="40.0" prefWidth="127.0" promptText="Password" stylesheets="@css/common.css" />
+            <JFXPasswordField fx:id="re_password" focusColor="#14aa9e" layoutX="514.0" layoutY="312.0" prefHeight="40.0" prefWidth="127.0" promptText="Re-Password" stylesheets="@css/common.css" />
             <Label layoutX="380.0" layoutY="431.0" stylesheets="@css/common.css" text="Gender:">
                <font>
                   <Font size="12.0" />
@@ -74,12 +75,8 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </JFXButton>
-            <JFXButton fx:id="signup_btn" layoutX="458.0" layoutY="533.0" onAction="#signUp" prefHeight="40.0" prefWidth="98.0" style="-fx-background-color: #4CAF50;" stylesheets="@css/common.css" text="Signup" textFill="WHITE">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </JFXButton>
-            <Hyperlink fx:id="login_btn" layoutX="546.0" layoutY="587.0" onAction="#openLoginPane" text="Login" textAlignment="CENTER" textFill="#4caf50" underline="true">
+            <JFXButton fx:id="signup_btn" buttonType="RAISED" layoutX="458.0" layoutY="533.0" onAction="#signUp" prefHeight="40.0" prefWidth="98.0" style="-fx-background-color: #14aa9e;" stylesheets="@css/common.css" text="Signup" textFill="WHITE" />
+            <Hyperlink fx:id="login_btn" layoutX="546.0" layoutY="587.0" onAction="#openLoginPane" text="Login" textAlignment="CENTER" textFill="#14aa9e" underline="true">
                <font>
                   <Font size="12.0" />
                </font>
