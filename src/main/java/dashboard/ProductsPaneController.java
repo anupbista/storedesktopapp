@@ -152,7 +152,7 @@ public class ProductsPaneController implements Initializable {
     private String productImagePath;
     @FXML
     private ImageView productImage;
-    ObservableList<String> productCatList = FXCollections.observableArrayList("Drinks", "Pant", "Shirts", "Shoes", "Watch", "Jacket", "Glasses", "Tshirts", "Electroic");
+    ObservableList<String> productCatList = FXCollections.observableArrayList("Drinks", "Pant", "Shirts", "Shoes", "Watch", "Jacket", "Glasses", "Tshirts", "Electronic");
 
     ObservableList<Products> observableListAllProducts = FXCollections.observableArrayList();
 
