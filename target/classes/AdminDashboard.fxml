@@ -94,8 +94,8 @@
                </cursor>
             </JFXButton>
             <FontAwesomeIconView fill="WHITE" layoutX="17.0" layoutY="204.0" size="14" text="" />
-            <Circle fill="#14aa9e" layoutX="184.0" layoutY="200.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
-            <Text fx:id="notiCount" fill="WHITE" layoutX="180.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+            <Circle fill="#14aa9e" layoutX="189.0" layoutY="197.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+            <Text fx:id="notiCount" fill="WHITE" layoutX="176.0" layoutY="202.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="26.27099609375" />
          </children>
       </AnchorPane>
       <StackPane fx:id="dashboard_main_content" layoutX="212.0" prefHeight="600.0" prefWidth="688.0" />

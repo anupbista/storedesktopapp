@@ -61,8 +61,8 @@
                      </cursor>
                   </JFXButton>
                   <FontAwesomeIconView fill="WHITE" layoutX="16.0" layoutY="112.0" size="14" text="" />
-                  <Circle fill="#14aa9e" layoutX="183.0" layoutY="108.0" radius="13.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
-                  <Text fx:id="notiCount" fill="WHITE" layoutX="179.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" />
+                  <Circle fill="#14aa9e" layoutX="183.0" layoutY="108.0" radius="14.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="0.0" />
+                  <Text fx:id="notiCount" fill="WHITE" layoutX="172.0" layoutY="113.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" textAlignment="CENTER" wrappingWidth="21.00001284480095" />
                </children>
             </Pane>
             <Text fill="#e2e2e2" layoutX="10.0" layoutY="583.0" strokeType="OUTSIDE" strokeWidth="0.0" text="© 2018 ADN ALL RIGHTS RESERVED" textAlignment="CENTER" wrappingWidth="191.00000381469727">
